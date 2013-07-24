@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+  <definitions>
+    <definition>
+      <key>addon_payment_worldpay_title</key>
+      <value><![CDATA[Worldpay]]></value>
+      <group>checkout</group>
+    </definition>
+    <definition>
+      <key>addon_payment_worldpay_description</key>
+      <value><![CDATA[Accept payments with Worldpay]]></value>
+      <group>checkout</group>
+    </definition>    
+    <definition>
+      <key>payment_worldpay_title</key>
+      <value><![CDATA[Worldpay Junior]]></value>
+      <group>checkout</group>
+    </definition>
+    <definition>
+      <key>payment_worldpay_method_title</key>
+      <value><![CDATA[Credit Card]]></value>
+      <group>checkout</group>
+    </definition>   
+    <definition>
+      <key>payment_worldpay_method_blurb</key>
+      <value><![CDATA[powered by <img src="addons/Worldpay/images/worldpay.png" style="vertical-align:middle">]]></value>
+      <group>checkout</group>
+    </definition>      
+  </definitions>
+</language>
