@@ -8,7 +8,7 @@
     </definition>
     <definition>
       <key>addon_payment_worldpay_description</key>
-      <value><![CDATA[Accept payments with Worldpay]]></value>
+      <value><![CDATA[WorldPay processes millions of payments everyday for businesses all over the world quickly and securely. Accept credit and debit cards, bank transfers, bill payments and more.]]></value>
       <group>checkout</group>
     </definition>    
     <definition>

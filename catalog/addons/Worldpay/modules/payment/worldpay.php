@@ -106,10 +106,10 @@ class lC_Payment_worldpay extends lC_Payment {
     
      if (ADDONS_PAYMENT_WORLDPAY_TEST_MODE == 'True') {
         
-        $this->form_action_url = 'https://select-test.worldpay.com/wcc/dispatcher'; 
+        $this->form_action_url = 'https://secure-test.worldpay.com/wcc/purchase'; 
       }else{
 
-        $this->form_action_url = 'https://select.worldpay.com/wcc/purchase';
+        $this->form_action_url = 'https://secure.worldpay.com/wcc/purchase';
       }
 
     
@@ -193,12 +193,8 @@ class lC_Payment_worldpay extends lC_Payment {
   * @return integer
   */ 
   public function confirmation() {
-    $_SESSION['cartSync']['paymentMethod'] = $this->_code;
-    $this->_order_id = lC_Order::insert();
-    // store the cartID info to match up on the return - to prevent multiple order IDs being created
-    $_SESSION['cartSync']['cartID'] = $_SESSION['cartID'];
-    $_SESSION['cartSync']['prepOrderID'] = $_SESSION['prepOrderID'];  
-    $_SESSION['cartSync']['orderCreated'] = TRUE;    
+    
+    return false;    
   }
  /**
   * Return the confirmation button logic
@@ -209,7 +205,7 @@ class lC_Payment_worldpay extends lC_Payment {
   public function process_button() {
    global $lC_Currencies, $lC_Customer, $order, $lC_Currencies, $lC_ShoppingCart, $lC_Language;
 
-      $order_id = $this->_order_id;
+      $order_id = lC_Order::insert();
       $process_button_string = lc_draw_hidden_field('instId', ADDONS_PAYMENT_WORLDPAY_INSTALLATION_ID) .
                                lc_draw_hidden_field('amount', $lC_Currencies->formatRaw($lC_ShoppingCart->getTotal(), $lC_Currencies->getCode())) .
                                lc_draw_hidden_field('currency', $_SESSION['currency']) .
@@ -226,7 +222,7 @@ class lC_Payment_worldpay extends lC_Payment {
                                lc_draw_hidden_field('lang', $lC_Language->getCode()) .
                                lc_draw_hidden_field('signatureFields', 'amount:currency:cartId') .
                                lc_draw_hidden_field('signature', md5(ADDONS_PAYMENT_WORLDPAY_MD5_PASSWORD . ':' . $lC_Currencies->formatRaw($lC_ShoppingCart->getTotal(), $lC_Currencies->getCode()) . ':' . $_SESSION['currency'] . ':' . $order_id)) .
-                               lc_draw_hidden_field('MC_callback', substr(tep_href_link('wpcallback.php', '', 'NONSSL', false, false), strpos(tep_href_link('wpcallback.php', '', 'NONSSL', false, false), '://')+3));
+                               lc_draw_hidden_field('MC_callback', lc_href_link(FILENAME_CHECKOUT, 'process', 'SSL', true, true, true));
 
       if(ADDONS_PAYMENT_WORLDPAY_TRANSACTION_METHOD == 'Pre-Authorization'){
 
@@ -269,7 +265,7 @@ class lC_Payment_worldpay extends lC_Payment {
           $pass = false;
         }
 
-        if(tep_not_null(ADDONS_PAYMENT_WORLDPAY_CALLBACK_PASSWORD) && !isset($_POST['callbackPW'])){
+        if(lc_not_null(ADDONS_PAYMENT_WORLDPAY_CALLBACK_PASSWORD) && !isset($_POST['callbackPW'])){
 
           $pass = false;
         }

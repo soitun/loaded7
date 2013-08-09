@@ -11,8 +11,6 @@
   @copyright  (c) 2013 LoadedCommerce Team
   @license    http://loadedcommerce.com/license.html
 */
-// include the addon class (this is NOT the addons class; notice there is no `s` in the class name)
-require_once(DIR_FS_CATALOG . 'includes/classes/addon.php');
 
 // your addon must extend lC_Addon
 class Worldpay extends lC_Addon {
@@ -61,11 +59,11 @@ class Worldpay extends lC_Addon {
    /**
     * The mobile capability of the addon
     */ 
-    $this->_mobile_enabled = true;    
+    $this->_mobile_enabled = false;    
    /**
     * The addon enable/disable switch
     */    
-    $this->_enabled = (defined('ADDONS_PAYMENT_' . strtoupper($this->_code) . '_STATUS') && @constant('ADDONS_PAYMENT_' . strtoupper($this->_code) . '_STATUS') == '1') ? true : false;      
+    $this->_enabled = (defined('ADDONS_PAYMENT_' . strtoupper($this->_code) . '_STATUS') && @constant('ADDONS_PAYMENT_' . strtoupper($this->_code) . '_STATUS') == '1') ? true : false;  
   }
  /**
   * Checks to see if the addon has been installed
