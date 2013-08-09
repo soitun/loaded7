@@ -1,6 +1,6 @@
 <?php
 /**  
-*  $Id: cresecure.php v1.0 2013-01-01 jamie $
+*  $Id: cresecure.php v1.0 2013-01-01 datazen $
 *
 *  LoadedCommerce, Innovative eCommerce Solutions
 *  http://www.loadedcommerce.com
@@ -99,7 +99,7 @@ class lC_Payment_worldpay extends lC_Payment {
     }
     
     if ((int)ADDONS_PAYMENT_WORLDPAY_ORDER_STATUS_COMPLETE_ID > 0) {
-      $this->_order_status_complete = ADDONS_PAYMENT_WORLDPAY_STATUS_COMPLETE_ID;
+      $this->_order_status_complete = ADDONS_PAYMENT_WORLDPAY_ORDER_STATUS_COMPLETE_ID;
     }    
 
     if (is_object($order)) $this->update_status();
@@ -210,7 +210,7 @@ class lC_Payment_worldpay extends lC_Payment {
    global $lC_Currencies, $lC_Customer, $order, $lC_Currencies, $lC_ShoppingCart, $lC_Language;
 
       $order_id = $this->_order_id;
-      $process_button_string = lc_draw_hidden_field('instId', ADDON_PAYMENT_WORLDPAY_INSTALLATION_ID) .
+      $process_button_string = lc_draw_hidden_field('instId', ADDONS_PAYMENT_WORLDPAY_INSTALLATION_ID) .
                                lc_draw_hidden_field('amount', $lC_Currencies->formatRaw($lC_ShoppingCart->getTotal(), $lC_Currencies->getCode())) .
                                lc_draw_hidden_field('currency', $_SESSION['currency']) .
                                lc_draw_hidden_field('hideCurrency', 'true') .
@@ -259,7 +259,7 @@ class lC_Payment_worldpay extends lC_Payment {
 
         $pass = false;
         
-        if(isset($_POST['M_hash']) && !empty($_POST['M_hash']) && ($_POST['M_hash'] == md5($_POST['M_sid'] . $_POST['M_cid'] . $_POST['cartId'] . $_POST['M_lang'] . number_format($_POST['amount'], 2) . MODULE_PAYMENT_WORLDPAY_MD5_PASSWORD))) {
+        if(isset($_POST['M_hash']) && !empty($_POST['M_hash']) && ($_POST['M_hash'] == md5($_POST['M_sid'] . $_POST['M_cid'] . $_POST['cartId'] . $_POST['M_lang'] . number_format($_POST['amount'], 2) . MODULE_PAYMENT_WORLDPAY_JUNIOR_MD5_PASSWORD))) {
           
           $pass = true;
         }
