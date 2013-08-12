@@ -236,7 +236,7 @@ class lC_Payment_worldpay extends lC_Payment {
       $process_button_string .= lc_draw_hidden_field('M_sid', session_id()) .
                                 lc_draw_hidden_field('M_cid', $lC_Customer->getID()) .
                                 lc_draw_hidden_field('M_lang', $lC_Language->getCode()) .
-                                tl_draw_hidden_field('M_hash', md5(session_id() . $lC_Customer->getID() . $order_id . $lC_Language->getCode() . number_format($lC_ShoppingCart->getTotal(), 2) . MODULE_PAYMENT_WORLDPAY_MD5_PASSWORD));
+                                lc_draw_hidden_field('M_hash', md5(session_id() . $lC_Customer->getID() . $order_id . $lC_Language->getCode() . number_format($lC_ShoppingCart->getTotal(), 2) . MODULE_PAYMENT_WORLDPAY_MD5_PASSWORD));
 
       return $process_button_string;
   }
