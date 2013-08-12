@@ -229,7 +229,7 @@ class lC_Payment_worldpay extends lC_Payment {
           $process_button_string .= lc_draw_hidden_field('authMode', 'E');
       }
 
-      if (ADDONS_PAYMENT_WORLDPAY_TEST_MODE == 'True') {
+      if (ADDONS_PAYMENT_WORLDPAY_TEST_MODE == '1') {
         $process_button_string .= lc_draw_hidden_field('testMode', '100');
       }
 
