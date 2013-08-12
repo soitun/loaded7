@@ -224,12 +224,12 @@ class lC_Payment_worldpay extends lC_Payment {
                                lc_draw_hidden_field('signature', md5(ADDONS_PAYMENT_WORLDPAY_MD5_PASSWORD . ':' . $lC_Currencies->formatRaw($lC_ShoppingCart->getTotal(), $lC_Currencies->getCode()) . ':' . $_SESSION['currency'] . ':' . $order_id)) .
                                lc_draw_hidden_field('MC_callback', lc_href_link(FILENAME_CHECKOUT, 'process', 'SSL', true, true, true));
 
-      if(ADDONS_PAYMENT_WORLDPAY_TRANSACTION_METHOD == 'Pre-Authorization'){
+      if (defined('ADDONS_PAYMENT_WORLDPAY_TRANSACTION_METHOD') && ADDONS_PAYMENT_WORLDPAY_TRANSACTION_METHOD == '1') {
 
           $process_button_string .= lc_draw_hidden_field('authMode', 'E');
       }
 
-      if (ADDONS_PAYMENT_WORLDPAY_TEST_MODE == '1') {
+      if (defined('ADDONS_PAYMENT_WORLDPAY_TEST_MODE') && ADDONS_PAYMENT_WORLDPAY_TEST_MODE == '1') {
         $process_button_string .= lc_draw_hidden_field('testMode', '100');
       }
 
