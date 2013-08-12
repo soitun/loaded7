@@ -215,7 +215,7 @@ class lC_Payment_worldpay extends lC_Payment {
                                lc_draw_hidden_field('name', $lC_ShoppingCart->getBillingAddress('firstname') . ' ' . $lC_ShoppingCart->getBillingAddress('lastname')) .
                                lc_draw_hidden_field('address', $lC_ShoppingCart->getBillingAddress('street_address')) .
                                lc_draw_hidden_field('postcode', $lC_ShoppingCart->getBillingAddress('postcode')) .
-                               lc_draw_hidden_field('country', $lC_ShoppingCart->getBillingAddress('country_iso_code_3')) .
+                               lc_draw_hidden_field('country', $lC_ShoppingCart->getBillingAddress('country_iso_code_2')) .
                                lc_draw_hidden_field('tel', $lC_Customer->getTelephone()) .
                                lc_draw_hidden_field('email', $lC_Customer->getEmailAddress()) .
                                lc_draw_hidden_field('fixContact', 'Y') .
