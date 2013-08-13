@@ -73,7 +73,7 @@ class lC_Payment_worldpay_hosted_payment extends lC_Payment {
  /**
   * Constructor
   */      
-  public function lC_Payment_worldpay() {
+  public function lC_Payment_worldpay_hosted_payment() {
     global $lC_Language;
 
     $this->_title = $lC_Language->get('payment_worldpay_hosted_payment_title');
