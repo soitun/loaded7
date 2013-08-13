@@ -81,7 +81,7 @@ class lC_Payment_worldpay_hosted_payment extends lC_Payment {
     $this->_status = true;
     $this->_sort_order = (defined('ADDONS_PAYMENT_WORLDPAY_SORT_ORDER') ? ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_SORT_ORDER : null);
 
-    if (defined('ADDONS_PAYMENT_WORLDPAY_STATUS')) {
+    if (defined('ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_STATUS')) {
       $this->initialize();
     }
   }
