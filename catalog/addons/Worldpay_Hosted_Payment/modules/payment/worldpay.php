@@ -27,7 +27,7 @@ class lC_Payment_worldpay_hosted_payment extends lC_Payment {
   * @var string
   * @access protected
   */  
-  $_code = 'worldpay_hosted_payment';
+  protected $_code = 'worldpay_hosted_payment';
  /**
   * The status of the module
   *

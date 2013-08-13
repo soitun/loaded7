@@ -27,7 +27,7 @@ class Worldpay_Hosted_Payment extends lC_Addon {
    /**
     * The addon class name
     */    
-    protected $this->_code = 'Worldpay_Hosted_Payment';        
+    $this->_code = 'Worldpay_Hosted_Payment';        
    /**
     * The addon title used in the addons store listing
     */     
