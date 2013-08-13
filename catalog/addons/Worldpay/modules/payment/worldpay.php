@@ -27,7 +27,7 @@ class lC_Payment_worldpay extends lC_Payment {
   * @var string
   * @access protected
   */  
-  protected $_code = 'worldpay';
+  protected $_code = 'worldpay_hosted_payment';
  /**
   * The status of the module
   *
@@ -76,10 +76,10 @@ class lC_Payment_worldpay extends lC_Payment {
   public function lC_Payment_worldpay() {
     global $lC_Language;
 
-    $this->_title = $lC_Language->get('payment_worldpay_title');
-    $this->_method_title = $lC_Language->get('payment_worldpay_method_title');
+    $this->_title = $lC_Language->get('payment_worldpay_hosted_payment_title');
+    $this->_method_title = $lC_Language->get('payment_worldpay_hosted_payment_method_title');
     $this->_status = true;
-    $this->_sort_order = (defined('ADDONS_PAYMENT_WORLDPAY_SORT_ORDER') ? ADDONS_PAYMENT_WORLDPAY_SORT_ORDER : null);
+    $this->_sort_order = (defined('ADDONS_PAYMENT_WORLDPAY_SORT_ORDER') ? ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_SORT_ORDER : null);
 
     if (defined('ADDONS_PAYMENT_WORLDPAY_STATUS')) {
       $this->initialize();
@@ -94,17 +94,17 @@ class lC_Payment_worldpay extends lC_Payment {
   public function initialize() {
     global $lC_Database, $lC_Language, $order;
 
-    if ((int)ADDONS_PAYMENT_WORLDPAY_ORDER_STATUS_ID > 0) {
-      $this->order_status = ADDONS_PAYMENT_WORLDPAY_ORDER_STATUS_ID;
+    if ((int)ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_ORDER_STATUS_ID > 0) {
+      $this->order_status = ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_ORDER_STATUS_ID;
     }
     
-    if ((int)ADDONS_PAYMENT_WORLDPAY_ORDER_STATUS_COMPLETE_ID > 0) {
-      $this->_order_status_complete = ADDONS_PAYMENT_WORLDPAY_ORDER_STATUS_COMPLETE_ID;
+    if ((int)ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_ORDER_STATUS_COMPLETE_ID > 0) {
+      $this->_order_status_complete = ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_ORDER_STATUS_COMPLETE_ID;
     }    
 
     if (is_object($order)) $this->update_status();
     
-     if (defined('ADDONS_PAYMENT_WORLDPAY_TEST_MODE') && ADDONS_PAYMENT_WORLDPAY_TEST_MODE == '1') {
+     if (defined('ADDONS_PAYMENT_WORLDPAY_TEST_MODE') && ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_TEST_MODE == '1') {
         
         $this->form_action_url = 'https://secure-test.worldpay.com/wcc/purchase'; 
       }else{
@@ -139,12 +139,12 @@ class lC_Payment_worldpay extends lC_Payment {
   public function update_status() {
     global $lC_Database, $order;
 
-    if ( ($this->_status === true) && ((int)ADDONS_PAYMENT_WORLDPAY_ZONE > 0) ) {
+    if ( ($this->_status === true) && ((int)ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_ZONE > 0) ) {
       $check_flag = false;
 
       $Qcheck = $lC_Database->query('select zone_id from :table_zones_to_geo_zones where geo_zone_id = :geo_zone_id and zone_country_id = :zone_country_id order by zone_id');
       $Qcheck->bindTable(':table_zones_to_geo_zones', TABLE_ZONES_TO_GEO_ZONES);
-      $Qcheck->bindInt(':geo_zone_id', ADDONS_PAYMENT_WORLDPAY_ZONE);
+      $Qcheck->bindInt(':geo_zone_id', ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_ZONE);
       $Qcheck->bindInt(':zone_country_id', $order->billing['country']['id']);
       $Qcheck->execute();
 
@@ -173,7 +173,7 @@ class lC_Payment_worldpay extends lC_Payment {
     global $lC_Language;
 
     $selection = array('id' => $this->_code,
-                       'module' => '<div class="payment-selection">' . $this->_method_title . '<span>' . $this->_card_images . '</span></div><div class="payment-selection-title">' . $lC_Language->get('payment_worldpay_method_blurb') . '</div>');    
+                       'module' => '<div class="payment-selection">' . $this->_method_title . '<span>' . $this->_card_images . '</span></div><div class="payment-selection-title">' . $lC_Language->get('payment_worldpay_hosted_payment_method_blurb') . '</div>');    
     
     return $selection;
   }
@@ -206,7 +206,7 @@ class lC_Payment_worldpay extends lC_Payment {
    global $lC_Currencies, $lC_Customer, $order, $lC_Currencies, $lC_ShoppingCart, $lC_Language;
 
       $order_id = lC_Order::insert();
-      $process_button_string = lc_draw_hidden_field('instId', ADDONS_PAYMENT_WORLDPAY_INSTALLATION_ID) .
+      $process_button_string = lc_draw_hidden_field('instId', ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_INSTALLATION_ID) .
                                lc_draw_hidden_field('amount', $lC_Currencies->formatRaw($lC_ShoppingCart->getTotal(), $lC_Currencies->getCode())) .
                                lc_draw_hidden_field('currency', $_SESSION['currency']) .
                                lc_draw_hidden_field('hideCurrency', 'true') .
@@ -221,15 +221,15 @@ class lC_Payment_worldpay extends lC_Payment {
                                lc_draw_hidden_field('fixContact', 'Y') .
                                lc_draw_hidden_field('lang', $lC_Language->getCode()) .
                                lc_draw_hidden_field('signatureFields', 'amount:currency:cartId') .
-                               lc_draw_hidden_field('signature', md5(ADDONS_PAYMENT_WORLDPAY_MD5_PASSWORD . ':' . $lC_Currencies->formatRaw($lC_ShoppingCart->getTotal(), $lC_Currencies->getCode()) . ':' . $_SESSION['currency'] . ':' . $order_id)) .
+                               lc_draw_hidden_field('signature', md5(ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_MD5_PASSWORD . ':' . $lC_Currencies->formatRaw($lC_ShoppingCart->getTotal(), $lC_Currencies->getCode()) . ':' . $_SESSION['currency'] . ':' . $order_id)) .
                                lc_draw_hidden_field('MC_callback', lc_href_link(FILENAME_CHECKOUT, 'process', 'SSL', true, true, true));
 
-      if (defined('ADDONS_PAYMENT_WORLDPAY_TRANSACTION_METHOD') && ADDONS_PAYMENT_WORLDPAY_TRANSACTION_METHOD == '1') {
+      if (defined('ADDONS_PAYMENT_WORLDPAY_TRANSACTION_METHOD') && ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_TRANSACTION_METHOD != '1') {
 
           $process_button_string .= lc_draw_hidden_field('authMode', 'E');
       }
 
-      if (defined('ADDONS_PAYMENT_WORLDPAY_TEST_MODE') && ADDONS_PAYMENT_WORLDPAY_TEST_MODE == '1') {
+      if (defined('ADDONS_PAYMENT_WORLDPAY_TEST_MODE') && ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_TEST_MODE == '1') {
 
         $process_button_string .= lc_draw_hidden_field('testMode', '100');
       }
@@ -237,7 +237,7 @@ class lC_Payment_worldpay extends lC_Payment {
       $process_button_string .= lc_draw_hidden_field('M_sid', session_id()) .
                                 lc_draw_hidden_field('M_cid', $lC_Customer->getID()) .
                                 lc_draw_hidden_field('M_lang', $lC_Language->getCode()) .
-                                lc_draw_hidden_field('M_hash', md5(session_id() . $lC_Customer->getID() . $order_id . $lC_Language->getCode() . number_format($lC_ShoppingCart->getTotal(), 2) . MODULE_PAYMENT_WORLDPAY_MD5_PASSWORD));
+                                lc_draw_hidden_field('M_hash', md5(session_id() . $lC_Customer->getID() . $order_id . $lC_Language->getCode() . number_format($lC_ShoppingCart->getTotal(), 2) . MODULE_PAYMENT_WORLDPAY_HOSTED_PAYMENT_MD5_PASSWORD));
 
       return $process_button_string;
   }
@@ -256,17 +256,17 @@ class lC_Payment_worldpay extends lC_Payment {
 
         $pass = false;
         
-        if(isset($_POST['M_hash']) && !empty($_POST['M_hash']) && ($_POST['M_hash'] == md5($_POST['M_sid'] . $_POST['M_cid'] . $_POST['cartId'] . $_POST['M_lang'] . number_format($_POST['amount'], 2) . MODULE_PAYMENT_WORLDPAY_JUNIOR_MD5_PASSWORD))) {
+        if(isset($_POST['M_hash']) && !empty($_POST['M_hash']) && ($_POST['M_hash'] == md5($_POST['M_sid'] . $_POST['M_cid'] . $_POST['cartId'] . $_POST['M_lang'] . number_format($_POST['amount'], 2) . MODULE_PAYMENT_WORLDPAY_HOSTED_PAYMENT_MD5_PASSWORD))) {
           
           $pass = true;
         }
 
-        if(isset($_POST['callbackPW']) && ($_POST['callbackPW'] != ADDONS_PAYMENT_WORLDPAY_CALLBACK_PASSWORD)){
+        if(isset($_POST['callbackPW']) && ($_POST['callbackPW'] != ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_CALLBACK_PASSWORD)){
           
           $pass = false;
         }
 
-        if(lc_not_null(ADDONS_PAYMENT_WORLDPAY_CALLBACK_PASSWORD) && !isset($_POST['callbackPW'])){
+        if(lc_not_null(ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_CALLBACK_PASSWORD) && !isset($_POST['callbackPW'])){
 
           $pass = false;
         }
@@ -292,7 +292,7 @@ class lC_Payment_worldpay extends lC_Payment {
   */ 
   public function check() {
     if (!isset($this->_check)) {
-      $this->_check = defined('ADDONS_PAYMENT_WORLDPAY_STATUS');
+      $this->_check = defined('ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_STATUS');
     }
 
     return $this->_check;
