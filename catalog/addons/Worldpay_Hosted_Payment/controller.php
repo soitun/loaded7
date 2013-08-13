@@ -17,7 +17,7 @@ class Worldpay extends lC_Addon {
   /*
   * Class constructor
   */
-  public function Worldpay() {    
+  public function Worldpay_Hosted_Payment() {    
     global $lC_Language, $lC_Template;    
    /**
     * The addon type (category)

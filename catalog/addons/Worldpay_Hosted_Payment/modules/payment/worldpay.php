@@ -13,7 +13,7 @@
 */
 include_once(DIR_FS_CATALOG . 'includes/classes/transport.php');
 
-class lC_Payment_worldpay extends lC_Payment {     
+class lC_Payment_worldpay_hosted_payment extends lC_Payment {     
  /**
   * The public title of the payment module
   *
