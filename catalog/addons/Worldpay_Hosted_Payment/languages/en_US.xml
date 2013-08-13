@@ -23,7 +23,7 @@
     </definition>   
     <definition>
       <key>payment_worldpay_hosted_payment_method_blurb</key>
-      <value><![CDATA[powered by <img src="addons/Worldpay/images/worldpay-small.png" style="vertical-align:middle">]]></value>
+      <value><![CDATA[powered by <img src="addons/Worldpay_Hosted_Payment/images/worldpay-small.png" style="vertical-align:middle">]]></value>
       <group>checkout</group>
     </definition>      
   </definitions>

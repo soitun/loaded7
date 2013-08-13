@@ -104,7 +104,7 @@ class lC_Payment_worldpay_hosted_payment extends lC_Payment {
 
     if (is_object($order)) $this->update_status();
     
-     if (defined('ADDONS_PAYMENT_WORLDPAY_TEST_MODE') && ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_TEST_MODE == '1') {
+     if (defined('ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_TEST_MODE') && ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_TEST_MODE == '1') {
         
         $this->form_action_url = 'https://secure-test.worldpay.com/wcc/purchase'; 
       }else{
