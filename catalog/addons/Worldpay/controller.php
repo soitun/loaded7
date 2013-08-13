@@ -18,7 +18,7 @@ class Worldpay extends lC_Addon {
   * Class constructor
   */
   public function Worldpay() {    
-    global $lC_Language;    
+    global $lC_Language, $lC_Template;    
    /**
     * The addon type (category)
     * valid types; payment, shipping, themes, checkout, catalog, admin, reports, connectors, other 
@@ -72,6 +72,8 @@ class Worldpay extends lC_Addon {
   * @return boolean
   */
   public function isInstalled() {
+    global $lC_Template;
+
     return (bool)defined('ADDONS_PAYMENT_' . $lC_Template->getCode() . '_STATUS');
   }
  /**
@@ -81,7 +83,7 @@ class Worldpay extends lC_Addon {
   * @return void
   */
   public function install() {
-    global $lC_Database;
+    global $lC_Database, $lC_Template;
 
     $lC_Database->simpleQuery("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('Enable AddOn', 'ADDONS_PAYMENT_" . $lC_Template->getCode() . "_STATUS', '-1', 'Do you want to enable this addon?', '6', '0', 'lc_cfg_use_get_boolean_value', 'lc_cfg_set_boolean_value(array(1, -1))', now())");
     $lC_Database->simpleQuery("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Installation ID', 'ADDONS_PAYMENT_" . $lC_Template->getCode() . "_INSTALLATION_ID', '', 'Installation ID used for the Worldpay payment service.', '6', '0', now())");
@@ -104,6 +106,8 @@ class Worldpay extends lC_Addon {
   * @return array
   */
   public function getKeys() {
+    global $lC_Template;
+    
     if (!isset($this->_keys)) {
       $this->_keys = array('ADDONS_PAYMENT_' . $lC_Template->getCode() . '_STATUS',
                            'ADDONS_PAYMENT_' . $lC_Template->getCode() . '_MD5_PASSWORD',
