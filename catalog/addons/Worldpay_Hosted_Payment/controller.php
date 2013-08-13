@@ -13,7 +13,7 @@
 */
 
 // your addon must extend lC_Addon
-class Worldpay extends lC_Addon {
+class Worldpay_Hosted_Payment extends lC_Addon {
   /*
   * Class constructor
   */
