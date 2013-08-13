@@ -29,8 +29,8 @@ if (!defined('DB_SERVER') || (defined('DB_SERVER') && DB_SERVER == '')) {
 }
 
 // set the level of error reporting
-error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
-//ini_set("display_errors", 1);
+//error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
+ini_set("display_errors", 1);
 ini_set('log_errors', true);
 ini_set('error_log', DIR_FS_WORK . 'php_errors.log');
 
