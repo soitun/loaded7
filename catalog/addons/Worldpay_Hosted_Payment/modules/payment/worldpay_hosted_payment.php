@@ -226,7 +226,10 @@ class lC_Payment_worldpay_hosted_payment extends lC_Payment {
 
       if (defined('ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_TRANSACTION_METHOD') && ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_TRANSACTION_METHOD == '1') {
 
-          $process_button_string .= lc_draw_hidden_field('authMode', 'A');
+        $process_button_string .= lc_draw_hidden_field('authMode', 'E');
+      }else{
+
+        $process_button_string .= lc_draw_hidden_field('authMode', 'A');
       }
 
       if (defined('ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_TEST_MODE') && ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_TEST_MODE == '1') {
