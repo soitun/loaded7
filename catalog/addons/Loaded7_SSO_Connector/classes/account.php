@@ -116,7 +116,7 @@
           $error = true;
         } 
       
-        if ( $error == false && lC_Account::createSSOEntry($data)) {
+        if ( $error == false && self::createSSOEntry($data)) {
           $redirect == true;
         }                  
       }
