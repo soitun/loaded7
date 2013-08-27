@@ -117,7 +117,7 @@
         } 
       
         if ( $error == false && self::createSSOEntry($data)) {
-          $redirect == true;
+          $redirect = true;
         }                  
       }
  
