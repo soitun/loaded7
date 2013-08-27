@@ -68,7 +68,8 @@
 
       if (self::checkExternalID($_GET['external_id'])) {
       
-        if (self::checkEmailforExternalID($_GET['email'],$_GET['external_id'])) {        
+        if (self::checkEmailforExternalID($_GET['email'],$_GET['external_id'])) {          
+          self::_loginSSO();
           $redirect = true;
         } else if(lC_Account::checkDuplicateEntry($_GET['email']) === false) {        
           // update email for existing customers_external_id
@@ -77,7 +78,9 @@
           $Qupdate->bindValue(':customers_email_address', $_GET['email']);
           $Qupdate->bindInt(':customers_external_id', $_GET['external_id']);
           $Qupdate->execute();
+          self::_loginSSO();
           $redirect = true;
+
         }
       } else if (lC_Account::checkEntry($_GET['email'])) {
              
@@ -87,9 +90,9 @@
           $Qupdate->bindValue(':customers_email_address', $_GET['email']);
           $Qupdate->bindInt(':customers_external_id', $_GET['external_id']);
           $Qupdate->execute();
+          self::_loginSSO();
           $redirect = true;
-      } else {
-           
+      } else {           
         $error = false;
         $customers_name = explode('-',$_GET['name'],2);
         $data['external_id'] = $_GET['external_id'];
@@ -118,9 +121,43 @@
         }                  
       }
  
-      if($redirect == true) {     
-        lc_redirect(lc_href_link($_GET['redirect']));        
+      if($redirect == true) {
+        lc_redirect(lc_href_link($_GET['redirect'], null, 'AUTO'));
       }      
     }
+
+    /* Private methods */
+    function _loginSSO() {
+      global $lC_Database, $lC_Session, $lC_Language, $lC_ShoppingCart, $lC_MessageStack, $lC_Customer, $lC_NavigationHistory, $lC_Vqmod;
+
+      require_once($lC_Vqmod->modCheck('includes/classes/account.php'));
+
+      if (lC_Account::checkEntry($_GET['email'])) {
+
+          if (SERVICE_SESSION_REGENERATE_ID == '1') {
+            $lC_Session->recreate();
+          }
+
+          $lC_Customer->setCustomerData(lC_Account::getID($_GET['email']));
+
+          $Qupdate = $lC_Database->query('update :table_customers set date_last_logon = :date_last_logon, number_of_logons = number_of_logons+1 where customers_id = :customers_id');
+          $Qupdate->bindTable(':table_customers', TABLE_CUSTOMERS);
+          $Qupdate->bindRaw(':date_last_logon', 'now()');
+          $Qupdate->bindInt(':customers_id', $lC_Customer->getID());
+          $Qupdate->execute();
+          
+          if ($lC_ShoppingCart->hasContents() === false) {
+            $lC_ShoppingCart->synchronizeWithDatabase();
+          }
+
+          $lC_NavigationHistory->removeCurrentPage();
+
+          if ($lC_NavigationHistory->hasSnapshot()) {
+            $lC_NavigationHistory->redirectToSnapshot();
+          }         
+      } 
+    }
+
+
   }
 ?>
