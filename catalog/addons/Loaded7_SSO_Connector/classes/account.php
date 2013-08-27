@@ -117,8 +117,9 @@
           $redirect == true;
         }                  
       }
-      if($redirect == true) {
-        lc_redirect($_GET['redirect']);
+ 
+      if($redirect == true) {     
+        lc_redirect(lc_href_link($_GET['redirect']));        
       }      
     }
   }
