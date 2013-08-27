@@ -116,7 +116,7 @@
           $error = true;
         } 
       
-        if ( $error == false && lC_Account::createEntry($data)) {
+        if ( $error == false && self::createSSOEntry($data)) {
           $redirect == true;
         }                  
       }
@@ -157,7 +157,30 @@
           }         
       } 
     }
+     public static function createSSOEntry($data) {
+      global $lC_Database, $lC_Session, $lC_Customer;
 
+      $Qcustomer = $lC_Database->query('insert into :table_customers (customers_firstname, customers_lastname, customers_email_address, customers_newsletter, customers_status, customers_ip_address, customers_password, customers_gender, customers_dob, number_of_logons, date_account_created) values (:customers_firstname, :customers_lastname, :customers_email_address, :customers_newsletter, :customers_status, :customers_ip_address, :customers_password, :customers_gender, :customers_dob, :number_of_logons, :date_account_created)');
+      $Qcustomer->bindTable(':table_customers', TABLE_CUSTOMERS);
+      $Qcustomer->bindValue(':customers_firstname', $data['firstname']);
+      $Qcustomer->bindValue(':customers_lastname', $data['lastname']);
+      $Qcustomer->bindValue(':customers_email_address', $data['email_address']);
+      $Qcustomer->bindValue(':customers_newsletter', (isset($data['newsletter']) && ($data['newsletter'] == '1') ? '1' : ''));
+      $Qcustomer->bindValue(':customers_status', '1');
+      $Qcustomer->bindValue(':customers_ip_address', lc_get_ip_address());
+      $Qcustomer->bindValue(':customers_password', lc_encrypt_string($data['password']));
+      $Qcustomer->bindValue(':customers_gender', (((ACCOUNT_GENDER > -1) && isset($data['gender']) && (($data['gender'] == 'm') || ($data['gender'] == 'f'))) ? $data['gender'] : ''));
+      $Qcustomer->bindValue(':customers_dob', ((ACCOUNT_DATE_OF_BIRTH == '1') ? @date('Ymd', $data['dob']) : '0000-00-00 00:00:00'));
+      $Qcustomer->bindInt(':number_of_logons', 0);
+      $Qcustomer->bindRaw(':date_account_created', 'now()');
+      $Qcustomer->execute();
 
+      if ( $Qcustomer->affectedRows() === 1 ) {
+        $customer_id = $lC_Database->nextID();
+        $lC_Customer->setCustomerData($customer_id);
+        return true;
+      }
+      return false;
+    }
   }
 ?>
