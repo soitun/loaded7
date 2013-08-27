@@ -31,7 +31,7 @@
 
       $Qcheck = $lC_Database->query('select customers_id from :table_customers where customers_external_id = :customers_external_id limit 1');
       $Qcheck->bindTable(':table_customers', TABLE_CUSTOMERS);
-      $Qcheck->bindValue(':customers_external_id', $external_id);
+      $Qcheck->bindInt(':customers_external_id', $external_id);
       $Qcheck->execute();
 
       return ( $Qcheck->numberOfRows() === 1 );
@@ -51,7 +51,7 @@
       $Qcheck = $lC_Database->query('select customers_id from :table_customers where customers_email_address = :customers_email_address and customers_external_id = :customers_external_id limit 1');
       $Qcheck->bindTable(':table_customers', TABLE_CUSTOMERS);
       $Qcheck->bindValue(':customers_email_address', $email_address);
-      $Qcheck->bindValue(':customers_external_id', $external_id);
+      $Qcheck->bindInt(':customers_external_id', $external_id);
       $Qcheck->execute();
 
       return ( $Qcheck->numberOfRows() === 1 );
@@ -94,7 +94,7 @@
           $redirect = true;
       } else {           
         $error = false;
-        $customers_name = explode('-',$_GET['name'],2);
+        $customers_name = explode(' ',$_GET['name'],2);
         $data['external_id'] = $_GET['external_id'];
         $data['password'] = mktime();
 
@@ -116,7 +116,7 @@
           $error = true;
         } 
       
-        if ( $error == false && self::createSSOEntry($data)) {
+        if ( $error == false && lC_Account::createSSOEntry($data)) {
           $redirect == true;
         }                  
       }
@@ -158,9 +158,9 @@
       } 
     }
      public static function createSSOEntry($data) {
-      global $lC_Database, $lC_Session, $lC_Customer;
+      global $lC_Database, $lC_Session, $lC_Language, $lC_ShoppingCart, $lC_Customer, $lC_NavigationHistory;
 
-      $Qcustomer = $lC_Database->query('insert into :table_customers (customers_firstname, customers_lastname, customers_email_address, customers_newsletter, customers_status, customers_ip_address, customers_password, customers_gender, customers_dob, number_of_logons, date_account_created) values (:customers_firstname, :customers_lastname, :customers_email_address, :customers_newsletter, :customers_status, :customers_ip_address, :customers_password, :customers_gender, :customers_dob, :number_of_logons, :date_account_created)');
+      $Qcustomer = $lC_Database->query('insert into :table_customers (customers_firstname, customers_lastname, customers_email_address, customers_newsletter, customers_status, customers_ip_address, customers_password, customers_gender, customers_dob, number_of_logons, date_account_created, customers_external_id) values (:customers_firstname, :customers_lastname, :customers_email_address, :customers_newsletter, :customers_status, :customers_ip_address, :customers_password, :customers_gender, :customers_dob, :number_of_logons, :date_account_created, :customers_external_id)');
       $Qcustomer->bindTable(':table_customers', TABLE_CUSTOMERS);
       $Qcustomer->bindValue(':customers_firstname', $data['firstname']);
       $Qcustomer->bindValue(':customers_lastname', $data['lastname']);
@@ -173,14 +173,44 @@
       $Qcustomer->bindValue(':customers_dob', ((ACCOUNT_DATE_OF_BIRTH == '1') ? @date('Ymd', $data['dob']) : '0000-00-00 00:00:00'));
       $Qcustomer->bindInt(':number_of_logons', 0);
       $Qcustomer->bindRaw(':date_account_created', 'now()');
+      $Qcustomer->bindInt(':customers_external_id', $data['external_id']);
       $Qcustomer->execute();
 
       if ( $Qcustomer->affectedRows() === 1 ) {
         $customer_id = $lC_Database->nextID();
+
+        if ( SERVICE_SESSION_REGENERATE_ID == '1' ) {
+          $lC_Session->recreate();
+        }
+
         $lC_Customer->setCustomerData($customer_id);
+
+// restore cart contents
+        $lC_ShoppingCart->synchronizeWithDatabase();
+
+        $lC_NavigationHistory->removeCurrentPage();
+
+// build the welcome email content
+        if ( (ACCOUNT_GENDER > -1) && isset($data['gender']) ) {
+           if ( $data['gender'] == 'm' ) {
+             $email_text = sprintf($lC_Language->get('email_addressing_gender_male'), $lC_Customer->getLastName()) . "\n\n";
+           } else {
+             $email_text = sprintf($lC_Language->get('email_addressing_gender_female'), $lC_Customer->getLastName()) . "\n\n";
+           }
+        } else {
+          $email_text = sprintf($lC_Language->get('email_addressing_gender_unknown'), $lC_Customer->getName()) . "\n\n";
+        }
+
+        $email_text .= sprintf($lC_Language->get('email_create_account_body'), STORE_NAME, STORE_OWNER_EMAIL_ADDRESS);
+        
+        lc_email($lC_Customer->getName(), $lC_Customer->getEmailAddress(), sprintf($lC_Language->get('email_create_account_subject'), STORE_NAME), $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+
         return true;
       }
+
       return false;
     }
+
+
   }
 ?>
