@@ -194,7 +194,7 @@
  */
 
     function &setup($module) {
-      global
+      global $lC_Vqmod;
       $group = basename($_SERVER['SCRIPT_FILENAME']);
       if (($pos = strrpos($group, '.')) !== false) {
         $group = substr($group, 0, $pos);
