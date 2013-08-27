@@ -7,18 +7,29 @@
   <file name="includes/content/account/login.php">
     <operation info="Add Loaded 7 SSO Connector Logic">
       <search position="before"><![CDATA[
-        if ($_GET[$this->_module] == 'process') {          
+        <?php        
       ]]></search>         
       <add><![CDATA[
-        global $lC_Vqmod;      
+      <?php
+       global $lC_Vqmod;      
 
        require($lC_Vqmod->modCheck(DIR_FS_CATALOG . 'addons/Loaded7_SSO_Connector/classes/account.php'));
-
-
+      ?>
+      ]]></add>
+    </operation>
+  
+    <operation info="Add Loaded 7 SSO Connector Logic">
+      <search position="before"><![CDATA[
+        if ($_GET[$this->_module] == 'process') {          
+      ]]></search>         
+      <add><![CDATA[       
          if ($_GET['LR'] == 'processSSO') {          
           lC_Account_sso_connector::_processSSO();
         } else
+        
       ]]></add>
     </operation>
   </file> 
+  
+
 </modification>
