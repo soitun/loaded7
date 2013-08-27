@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+  <id>Add Loaded 7 SSO Connector Logic</id>
+  <version>1.0.0</version>
+  <vqmver>2.3.2</vqmver>
+  <author>loadedcommerce.com</author>
+  <file name="includes/content/account/login.php">
+    <operation info="Add Loaded 7 SSO Connector Logic">
+      <search position="before"><![CDATA[
+        if ($_GET[$this->_module] == 'process') {          
+      ]]></search>         
+      <add><![CDATA[
+        global $lC_Vqmod;      
+
+       require($lC_Vqmod->modCheck(DIR_FS_CATALOG . 'addons/Loaded7_SSO_Connector/classes/account.php'));
+
+
+         if ($_GET['LR'] == 'processSSO') {          
+          lC_Account_sso_connector::_processSSO();
+        } else
+      ]]></add>
+    </operation>
+  </file> 
+</modification>
