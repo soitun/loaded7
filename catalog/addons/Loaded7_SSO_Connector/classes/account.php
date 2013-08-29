@@ -60,6 +60,10 @@
       /* Private methods */   
     function _processSSO() {
       global $lC_Database, $lC_Session, $lC_Language, $lC_ShoppingCart, $lC_MessageStack, $lC_Customer, $lC_NavigationHistory, $lC_Vqmod;
+
+      if(!self::is_authenticated()) {       
+        return ;
+      }
       
       require($lC_Vqmod->modCheck('includes/classes/account.php'));
       
@@ -67,7 +71,7 @@
       $data = array();
 
       if (self::checkExternalID($_GET['external_id'])) {
-      
+     
         if (self::checkEmailforExternalID($_GET['email'],$_GET['external_id'])) {          
           self::_loginSSO();
           $redirect = true;
@@ -83,7 +87,7 @@
 
         }
       } else if (lC_Account::checkEntry($_GET['email'])) {
-             
+         
         // update customers_external_id for existing email_address
           $Qupdate = $lC_Database->query('update :table_customers set customers_external_id = :customers_external_id where customers_email_address = :customers_email_address');
           $Qupdate->bindTable(':table_customers', TABLE_CUSTOMERS);
@@ -92,9 +96,10 @@
           $Qupdate->execute();
           self::_loginSSO();
           $redirect = true;
-      } else {           
-        $error = false;
-        $customers_name = explode(' ',$_GET['name'],2);
+      } else { 
+    
+        $error = false;       
+        $customers_name = explode(' ',$_GET['name'],2);        
         $data['external_id'] = $_GET['external_id'];
         $data['password'] = mktime();
 
@@ -120,7 +125,7 @@
           $redirect = true;
         }                  
       }
- 
+
       if($redirect == true) {
         lc_redirect(lc_href_link($_GET['redirect'], null, 'AUTO'));
       }      
@@ -211,6 +216,20 @@
       return false;
     }
 
+    function is_authenticated() {      
+      $sFullName = $_GET['name'];
+      $sEmail = $_GET['email'];
+      $sExternalID = $_GET['external_id'];
+      $sHash = trim($_GET['hash']);
+      $sTimestamp = $_GET['timestamp'];
 
+      $sMessage = $sFullName . $sEmail . $sExternalID . ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_AUTHENTICATION_TOKEN . $sTimestamp; 
+      $sToken = MD5($sMessage);
+      
+      if($sHash == trim($sToken)) {
+        return true;
+      } 
+      return false;
+    }
   }
 ?>
