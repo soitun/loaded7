@@ -76,7 +76,7 @@ class Loaded7_SSO_Connector extends lC_Addon { // your addon must extend lC_Addo
     $encrypted_key = hash('sha256', mktime());
 
     $lC_Database->simpleQuery("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('Enable AddOn', 'ADDONS_CONNECTORS_" . strtoupper($this->_code) . "_STATUS', '-1', 'Do you want to enable this addon?', '6', '0', 'lc_cfg_use_get_boolean_value', 'lc_cfg_set_boolean_value(array(1, -1))', now())");
-    $lC_Database->simpleQuery("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Authentication Token', 'ADDONS_CONNECTORS_" . strtoupper($this->_code) . "_AUTHENTICATION_TOKEN', '".$encrypted_key."', 'Use this key in Wordpress Plugin', '6', '0', 'lc_cfg_set_readonly_input_field', now())");
+    $lC_Database->simpleQuery("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Authentication Token', 'ADDONS_CONNECTORS_" . strtoupper($this->_code) . "_AUTHENTICATION_TOKEN', '".$encrypted_key."', '', '6', '0', 'lc_cfg_set_readonly_input_field', now())");
 
 
  

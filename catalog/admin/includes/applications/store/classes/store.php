@@ -108,7 +108,11 @@ class lC_Store_Admin {
           }
         }
       }
-      $keys .= '<span class="info-spot on-left margin-left"><span class="icon-info-round icon-silver"></span><span class="info-bubble">' . $Qkey->value('configuration_description') . '</span></span><br /><br />';
+      if($Qkey->value('configuration_description') != '') {
+        $keys .= '<span class="info-spot on-left margin-left"><span class="icon-info-round icon-silver"></span><span class="info-bubble">' . $Qkey->value('configuration_description') . '</span></span>';
+      }
+
+      $keys .= '<br /><br />';
       $cnt++;
     }
     $result['keys'] = substr($keys, 0, strrpos($keys, '<br /><br />'));
