@@ -16,6 +16,7 @@
 
     $name = (!empty($key) ? 'configuration[' . $key . ']' : 'configuration_value');
 
-    return lc_draw_input_field($name, $default, 'class="input" onfocus="this.select();"  readonly');
+    //return lc_draw_input_field($name, $default, 'class="input" onfocus="this.select();"  readonly');
+    return $default;
   }
 ?>
