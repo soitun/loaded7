@@ -21,7 +21,9 @@
         if ($_GET[$this->_module] == 'process') {          
       ]]></search>         
       <add><![CDATA[
-      if ($_GET['LR'] == 'processSSO') {
+      if(!isset($_GET['LR']) && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1) {       
+        lc_redirect(ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_WORDPRESS_URL."/wp-login.php");
+      } else if ($_GET['LR'] == 'processSSO') {
         lC_Account_sso_connector::_processSSO();
       } else ]]></add>
     </operation>
