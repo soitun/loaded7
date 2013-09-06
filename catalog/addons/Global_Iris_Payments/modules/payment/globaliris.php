@@ -199,7 +199,8 @@ class lC_Payment_globaliris extends lC_Payment {
     $merchantid = ADDONS_PAYMENT_GLOBAL_IRIS_PAYMENTS_MERCHANT_ID;
     $secret = ADDONS_PAYMENT_GLOBAL_IRIS_PAYMENTS_SECRET_KEY;
     
-    $amount = str_replace(".", "", $lC_ShoppingCart->getTotal());
+    $amount = str_replace('.', '', $lC_Currencies->formatRaw($lC_ShoppingCart->getTotal(), $lC_Currencies->getCode()));
+    //$amount = str_replace(".", "", $lC_ShoppingCart->getTotal());
     $curr = $lC_Currencies->getCode();
     
     $tmp = "$timestamp.$merchantid.$orderid.$amount.$curr";
@@ -214,6 +215,11 @@ class lC_Payment_globaliris extends lC_Payment {
     $process_button_string .= lc_draw_hidden_field('TIMESTAMP', $timestamp) . "\n";
     $process_button_string .= lc_draw_hidden_field('MD5HASH', $md5hash) . "\n";
     $process_button_string .= lc_draw_hidden_field('AUTO_SETTLE_FLAG', '1') . "\n";
+
+    $process_button_string .= lc_draw_hidden_field('SHIPPING_CODE', $lC_ShoppingCart->getShippingAddress('postcode')) . "\n";
+    $process_button_string .= lc_draw_hidden_field('SHIPPING_CO', $lC_ShoppingCart->getShippingAddress('country_iso_code_2')) . "\n";
+    $process_button_string .= lc_draw_hidden_field('BILLING_CODE', $lC_ShoppingCart->getBillingAddress('postcode')) . "\n";
+    $process_button_string .= lc_draw_hidden_field('BILLING_CO', $lC_ShoppingCart->getBillingAddress('country_iso_code_2')) . "\n";
 
     return $process_button_string;
   }
