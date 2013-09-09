@@ -561,6 +561,11 @@ class lC_Products_Admin {
     }
     
     if ( $error === false ) {
+      if ( isset($data['categories']) && !empty($data['categories']) ) {
+        $cPath = $lC_CategoryTree->getcPath($data['categories'][0]);
+      } else {
+        $cPath = ($category_id != '') ? $lC_CategoryTree->getcPath($category_id) : 0;
+      }
       foreach ($lC_Language->getAll() as $l) {
         if ( is_numeric($id) ) {
           $Qpd = $lC_Database->query('update :table_products_description set products_name = :products_name, products_description = :products_description, products_keyword = :products_keyword, products_tags = :products_tags, products_url = :products_url where products_id = :products_id and language_id = :language_id');
@@ -577,6 +582,25 @@ class lC_Products_Admin {
         $Qpd->bindValue(':products_url', $data['products_url'][$l['id']]);
         $Qpd->setLogging($_SESSION['module'], $products_id);
         $Qpd->execute();
+
+        if ( $lC_Database->isError() ) {
+          $error = true;
+          break;
+        }
+        
+        // added for permalink
+        if (is_numeric($id)) {
+          $Qpl = $lC_Database->query('update :table_permalinks set permalink = :permalink, query = :query where item_id = :item_id and type = :type and language_id = :language_id');
+        } else {
+          $Qpl = $lC_Database->query('insert into :table_permalinks (item_id, language_id, type, query, permalink) values (:item_id, :language_id, :type, :query, :permalink)');
+        }
+        $Qpl->bindTable(':table_permalinks', TABLE_PERMALINKS);
+        $Qpl->bindInt(':item_id', $products_id);
+        $Qpl->bindInt(':language_id', $l['id']);
+        $Qpl->bindInt(':type', 2);
+        $Qpl->bindValue(':query', 'cPath=' . $cPath);
+        $Qpl->bindValue(':permalink', $data['products_keyword'][$l['id']]);
+        $Qpl->execute();
 
         if ( $lC_Database->isError() ) {
           $error = true;
@@ -1380,7 +1404,7 @@ class lC_Products_Admin {
     } else {
       $keyword_count = $Qkeywords->valueInt('total');
     }
-
+    
     return $keyword_count;
   }
  /*
@@ -1392,12 +1416,12 @@ class lC_Products_Admin {
   */
   public static function validate($keyword_array, $pid = null) {
 
-    $validated = true;;
+    $validated = true;
     foreach($keyword_array as $keyword) {
       if ( preg_match('/^[a-z0-9_-]+$/iD', $keyword) !== 1 ) $validated = false;
       if ( lC_Products_Admin::getKeywordCount($keyword, $pid) > 0) $validated = false;
     }
-
+    
     return $validated;
   }
     /*
@@ -1694,6 +1718,25 @@ class lC_Products_Admin {
     }
     
     return $content;
+  }
+ /*
+  * Return the id of of a product by keyword
+  *
+  * @param string $keyword The keyword string to search by
+  * @param integer $id The products id returned
+  * @access public
+  * @return integer
+  */
+  public static function getIdFromKeyword($keyword) {
+    global $lC_Database;
+
+    $Qid = $lC_Database->query('select products_id from :table_products_description where products_keyword = :products_keyword');
+
+    $Qid->bindTable(':table_products_description', TABLE_PRODUCTS_DESCRIPTION);
+    $Qid->bindValue(':products_keyword', $keyword);
+    $Qid->execute();
+    
+    return $Qid->valueInt('products_id');
   }    
 }
 ?>

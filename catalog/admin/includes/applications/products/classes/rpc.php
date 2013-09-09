@@ -398,6 +398,25 @@ class lC_Products_Admin_rpc {
 
     echo json_encode($result);
   }     
+ /*
+  * Create a new product from name and permalink
+  *
+  * @access public
+  * @return json
+  */
+  public static function newProduct() {
+    $data['products_name'][1] = $_GET['products_name'];
+    $data['products_keyword'][1] = $_GET['products_keyword'];
+    
+    $result = array();
+    $created = lC_Products_Admin::save(null, $data);
+    if ($created) {
+      $result['pid'] = lC_Products_Admin::getIdFromKeyword($_GET['products_keyword']);
+      $result['rpcStatus'] = RPC_STATUS_SUCCESS;
+    }
+    
+    echo json_encode($result);
+  }     
   
 }
 ?>

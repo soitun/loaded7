@@ -67,7 +67,7 @@
         <div id="buttons-container" style="position: relative;" class="clear-both">
           <div style="float:right;">
             <p class="button-height" align="right">
-              <a class="button<?php echo (((int)$_SESSION['admin']['access'][$lC_Template->getModule()] < 2) ? ' disabled' : NULL); ?>" href="<?php echo (((int)$_SESSION['admin']['access'][$lC_Template->getModule()] < 2) ? '#' : lc_href_link_admin(FILENAME_DEFAULT, $lC_Template->getModule() . '&cID=' . $category_id . '&action=save')); ?>">
+              <a class="cursor-pointer button<?php echo (((int)$_SESSION['admin']['access'][$lC_Template->getModule()] < 2) ? ' disabled' : NULL); ?>" onclick="newProduct();">
                 <span class="button-icon green-gradient">
                   <span class="icon-plus"></span>
                 </span><?php echo $lC_Language->get('button_new_product'); ?>

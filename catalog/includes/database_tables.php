@@ -22,6 +22,7 @@
   define('TABLE_CATEGORIES_DESCRIPTION', DB_TABLE_PREFIX . 'categories_description');
   define('TABLE_COMPONENTS', DB_TABLE_PREFIX . 'components');
   define('TABLE_COMPONENTS_FILES', DB_TABLE_PREFIX . 'components_files');
+  define('TABLE_PERMALINKS', DB_TABLE_PREFIX . 'permalinks');
   define('TABLE_PLUGINS', DB_TABLE_PREFIX . 'plugins');
   define('TABLE_PLUGINS_GROUP', DB_TABLE_PREFIX . 'plugins_group');
   define('TABLE_CONFIGURATION', DB_TABLE_PREFIX . 'configuration');

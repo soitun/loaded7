@@ -15,6 +15,7 @@ button_add_variant = Add Variant
 button_add_variant_option = Add Variant Option
 button_add_new_group = Add New Group
 button_add_new_item = Add New Item
+button_create_product = Create & Edit
 
 field_name = Name:
 field_copy_method = Copy Method:
@@ -44,6 +45,8 @@ field_weight_class = Weight Class:
 field_active = Active:
 field_date_available = Date Available:
 field_non_shippable = Non Shippable
+field_products_name = Product Name<br /><small>&nbsp;</small>
+field_products_permalink = Product Permalink<br /><small>Must be unique</small>
 
 heading_title = Products
 heading_title_new_product = New Product
@@ -62,6 +65,7 @@ introduction_delete_product = Please verify the removal of this product.
 introduction_batch_copy_products = Please choose which category the selected products should be copied to.
 introduction_batch_delete_products = Please verify the removal of the selected products.
 introduction_is_variant = Will the new product have variants? (eg. size, color, etc.)
+introduction_new_product = Please enter a Name and Permalink to create a new product. Both are required.
 
 modal_heading_new_product = New Product
 modal_heading_edit_product = Edit Product

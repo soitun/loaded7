@@ -224,7 +224,7 @@ if (!empty($_GET['action']) && ($_GET['action'] == 'save')) { // edit a product
       checkImageExists('../images/products/large/' + defaultImage).done(function() {
         $('#imagePreviewContainer').html('<img src="<?php echo '../images/products/large/'; ?>' + defaultImage + '" style="max-width:100%;" />');
       }).fail(function() {
-        $('#imagePreviewContainer').html('<img src="<?php echo '../images/no_image'; ?>" style="max-width:100%;" />');
+        $('#imagePreviewContainer').html('<img src="<?php echo '../images/no_image.png'; ?>" style="max-width:100%;" />');
       });       
       
       $('#additionalOriginal').sortable({
@@ -617,6 +617,10 @@ if (!empty($_GET['action']) && ($_GET['action'] == 'save')) { // edit a product
       updateProductFilter();
     });
 
+    function updatePermalink(){
+      $("#products_keyword").val($("#products_name").val().toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, ''));
+    }
+      
     function doSelectFunction(e) {
       if (e.value == 'delete') {
         batchDelete();

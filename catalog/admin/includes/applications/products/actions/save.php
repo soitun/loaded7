@@ -17,13 +17,8 @@
       global $lC_Language, $lC_MessageStack;
 
       parent::__construct();
-    
-      if (isset($_GET['old']) && $_GET['old'] == 'old') {
-        $this->_page_contents = 'edit.old.php';
-      } else {
-        $this->_page_contents = 'edit.php';
-      }
-          
+      
+      $this->_page_contents = 'edit.php';          
       
       if ( (lc_empty(CFG_APP_IMAGEMAGICK_CONVERT) || !@file_exists(CFG_APP_IMAGEMAGICK_CONVERT)) && !lC_Image_Admin::hasGDSupport() ) {
         $_SESSION['error'] = true;                                                                                            
