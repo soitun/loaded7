@@ -102,28 +102,23 @@
         $customers_name = explode(' ',$_GET['name'],2);        
         $data['external_id'] = $_GET['external_id'];
         $data['password'] = mktime();
-
-        if (isset($customers_name[0]) && (strlen(trim($customers_name[0])) >= ACCOUNT_FIRST_NAME)) {
+  
+        if (isset($customers_name[0]) ) {
           $data['firstname'] = $customers_name[0];
-        } else {
-          $error = true;
-        }
+        } 
 
-        if (isset($customers_name[1]) && (strlen(trim($customers_name[1])) >= ACCOUNT_LAST_NAME)) {
+        if (isset($customers_name[1]) ) {
           $data['lastname'] = $customers_name[1];
-        } else {
-          $error = true;
-        }
+        } 
 
         if (lC_Account::checkDuplicateEntry($_GET['email']) === false) {
           $data['email_address'] = $_GET['email'];
-        } else {
-          $error = true;
         } 
-      
-        if ( $error == false && self::createSSOEntry($data)) {
+        
+       
+        if ( self::createSSOEntry($data)) {
           $redirect = true;
-        }                  
+        }                                    
       }
 
       if($redirect == true) {
@@ -167,8 +162,8 @@
 
       $Qcustomer = $lC_Database->query('insert into :table_customers (customers_firstname, customers_lastname, customers_email_address, customers_newsletter, customers_status, customers_ip_address, customers_password, customers_gender, customers_dob, number_of_logons, date_account_created, customers_external_id) values (:customers_firstname, :customers_lastname, :customers_email_address, :customers_newsletter, :customers_status, :customers_ip_address, :customers_password, :customers_gender, :customers_dob, :number_of_logons, :date_account_created, :customers_external_id)');
       $Qcustomer->bindTable(':table_customers', TABLE_CUSTOMERS);
-      $Qcustomer->bindValue(':customers_firstname', $data['firstname']);
-      $Qcustomer->bindValue(':customers_lastname', $data['lastname']);
+      $Qcustomer->bindValue(':customers_firstname', (isset($data['firstname']) ? $data['firstname'] : ''));
+      $Qcustomer->bindValue(':customers_lastname', (isset($data['lastname']) ? $data['lastname'] : '' ));
       $Qcustomer->bindValue(':customers_email_address', $data['email_address']);
       $Qcustomer->bindValue(':customers_newsletter', (isset($data['newsletter']) && ($data['newsletter'] == '1') ? '1' : ''));
       $Qcustomer->bindValue(':customers_status', '1');
