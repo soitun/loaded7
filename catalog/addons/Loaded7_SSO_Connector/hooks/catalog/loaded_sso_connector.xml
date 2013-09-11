@@ -23,10 +23,10 @@
       <add><![CDATA[
       if(!isset($_GET['LR']) && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1) {
         $separator = "";
-        if(substr(ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_WORDPRESS_URL,-1) != "/"){
+        if(substr(ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_APPLICATION_URL,-1) != "/"){
           $separator = "/";
         }
-        lc_redirect(ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_WORDPRESS_URL.$separator."wp-login.php?loaded7");
+        lc_redirect(ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_APPLICATION_URL.$separator."wp-login.php?loaded7");
       } else if ($_GET['LR'] == 'processSSO') {
         lC_Account_sso_connector::_processSSO();
       } else ]]></add>

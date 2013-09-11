@@ -29,9 +29,9 @@
     public static function checkExternalID($external_id) {
       global $lC_Database;
 
-      $Qcheck = $lC_Database->query('select customers_id from :table_customers where customers_external_id = :customers_external_id limit 1');
+      $Qcheck = $lC_Database->query('select customers_id from :table_customers where external_id = :external_id limit 1');
       $Qcheck->bindTable(':table_customers', TABLE_CUSTOMERS);
-      $Qcheck->bindInt(':customers_external_id', $external_id);
+      $Qcheck->bindInt(':external_id', $external_id);
       $Qcheck->execute();
 
       return ( $Qcheck->numberOfRows() === 1 );
@@ -48,10 +48,10 @@
     public static function checkEmailforExternalID($email_address,$external_id) {
       global $lC_Database;
 
-      $Qcheck = $lC_Database->query('select customers_id from :table_customers where customers_email_address = :customers_email_address and customers_external_id = :customers_external_id limit 1');
+      $Qcheck = $lC_Database->query('select customers_id from :table_customers where customers_email_address = :customers_email_address and external_id = :external_id limit 1');
       $Qcheck->bindTable(':table_customers', TABLE_CUSTOMERS);
       $Qcheck->bindValue(':customers_email_address', $email_address);
-      $Qcheck->bindInt(':customers_external_id', $external_id);
+      $Qcheck->bindInt(':external_id', $external_id);
       $Qcheck->execute();
 
       return ( $Qcheck->numberOfRows() === 1 );
@@ -76,11 +76,11 @@
           self::_loginSSO();
           $redirect = true;
         } else if(lC_Account::checkDuplicateEntry($_GET['email']) === false) {        
-          // update email for existing customers_external_id
-          $Qupdate = $lC_Database->query('update :table_customers set customers_email_address = :customers_email_address where customers_external_id = :customers_external_id');
+          // update email for existing external_id
+          $Qupdate = $lC_Database->query('update :table_customers set customers_email_address = :customers_email_address where external_id = :external_id');
           $Qupdate->bindTable(':table_customers', TABLE_CUSTOMERS);
           $Qupdate->bindValue(':customers_email_address', $_GET['email']);
-          $Qupdate->bindInt(':customers_external_id', $_GET['external_id']);
+          $Qupdate->bindInt(':external_id', $_GET['external_id']);
           $Qupdate->execute();
           self::_loginSSO();
           $redirect = true;
@@ -88,11 +88,11 @@
         }
       } else if (lC_Account::checkEntry($_GET['email'])) {
          
-        // update customers_external_id for existing email_address
-          $Qupdate = $lC_Database->query('update :table_customers set customers_external_id = :customers_external_id where customers_email_address = :customers_email_address');
+        // update external_id for existing email_address
+          $Qupdate = $lC_Database->query('update :table_customers set external_id = :external_id where customers_email_address = :customers_email_address');
           $Qupdate->bindTable(':table_customers', TABLE_CUSTOMERS);
           $Qupdate->bindValue(':customers_email_address', $_GET['email']);
-          $Qupdate->bindInt(':customers_external_id', $_GET['external_id']);
+          $Qupdate->bindInt(':external_id', $_GET['external_id']);
           $Qupdate->execute();
           self::_loginSSO();
           $redirect = true;
@@ -160,7 +160,7 @@
      public static function createSSOEntry($data) {
       global $lC_Database, $lC_Session, $lC_Language, $lC_ShoppingCart, $lC_Customer, $lC_NavigationHistory;
 
-      $Qcustomer = $lC_Database->query('insert into :table_customers (customers_firstname, customers_lastname, customers_email_address, customers_newsletter, customers_status, customers_ip_address, customers_password, customers_gender, customers_dob, number_of_logons, date_account_created, customers_external_id) values (:customers_firstname, :customers_lastname, :customers_email_address, :customers_newsletter, :customers_status, :customers_ip_address, :customers_password, :customers_gender, :customers_dob, :number_of_logons, :date_account_created, :customers_external_id)');
+      $Qcustomer = $lC_Database->query('insert into :table_customers (customers_firstname, customers_lastname, customers_email_address, customers_newsletter, customers_status, customers_ip_address, customers_password, customers_gender, customers_dob, number_of_logons, date_account_created, external_id) values (:customers_firstname, :customers_lastname, :customers_email_address, :customers_newsletter, :customers_status, :customers_ip_address, :customers_password, :customers_gender, :customers_dob, :number_of_logons, :date_account_created, :external_id)');
       $Qcustomer->bindTable(':table_customers', TABLE_CUSTOMERS);
       $Qcustomer->bindValue(':customers_firstname', (isset($data['firstname']) ? $data['firstname'] : ''));
       $Qcustomer->bindValue(':customers_lastname', (isset($data['lastname']) ? $data['lastname'] : '' ));
@@ -173,7 +173,7 @@
       $Qcustomer->bindValue(':customers_dob', ((ACCOUNT_DATE_OF_BIRTH == '1') ? @date('Ymd', $data['dob']) : '0000-00-00 00:00:00'));
       $Qcustomer->bindInt(':number_of_logons', 0);
       $Qcustomer->bindRaw(':date_account_created', 'now()');
-      $Qcustomer->bindInt(':customers_external_id', $data['external_id']);
+      $Qcustomer->bindInt(':external_id', $data['external_id']);
       $Qcustomer->execute();
 
       if ( $Qcustomer->affectedRows() === 1 ) {
