@@ -21,15 +21,28 @@
         if ($_GET[$this->_module] == 'process') {          
       ]]></search>         
       <add><![CDATA[
-      if(!isset($_GET['LR']) && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1) {
+      if(!isset($_GET['LR']) && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1) { 
         $separator = "";
-        if(substr(ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_APPLICATION_URL,-1) != "/"){
-          $separator = "/";
+        if(preg_match("/[?]/",ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_WORDPRESS_URL)){
+          $separator = "&loaded7";
+        }else {
+          $separator = "?loaded7";
         }
-        lc_redirect(ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_APPLICATION_URL.$separator."wp-login.php?loaded7");
+        lc_redirect(ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_LOGIN_URL.$separator);
       } else if ($_GET['LR'] == 'processSSO') {
         lC_Account_sso_connector::_processSSO();
       } else ]]></add>
+    </operation>
+  </file>
+  <file name="includes/content/account/logoff.php">    
+    <operation info="Add Loaded 7 SSO Connector Logic">
+      <search position="after"><![CDATA[
+        $lC_Customer->reset();          
+      ]]></search>         
+      <add><![CDATA[
+      if( ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1) {        
+        lc_redirect(ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_LOGOUT_URL);        
+      } ]]></add>
     </operation>
   </file>
 </modification>

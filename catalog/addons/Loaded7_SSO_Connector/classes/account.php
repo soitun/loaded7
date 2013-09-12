@@ -216,12 +216,12 @@
       $sEmail = $_GET['email'];
       $sExternalID = $_GET['external_id'];
       $sHash = trim($_GET['hash']);
-      $sTimestamp = $_GET['timestamp'];
+      $sTimestamp = $_GET['timestamp'];      
 
       $sMessage = $sFullName . $sEmail . $sExternalID . ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_AUTHENTICATION_TOKEN . $sTimestamp; 
       $sToken = MD5($sMessage);
       
-      if($sHash == trim($sToken)) {
+      if($sHash == trim($sToken)) {        
         return true;
       } 
       return false;
