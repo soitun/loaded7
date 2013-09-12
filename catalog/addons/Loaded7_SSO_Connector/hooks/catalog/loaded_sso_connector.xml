@@ -21,7 +21,7 @@
         if ($_GET[$this->_module] == 'process') {          
       ]]></search>         
       <add><![CDATA[
-      if(!isset($_GET['LR']) && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1) { 
+      if(!isset($_GET['LR']) && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1 && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_WORDPRESS_URL != '') { 
         $separator = "";
         if(preg_match("/[?]/",ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_WORDPRESS_URL)){
           $separator = "&loaded7";
@@ -40,7 +40,7 @@
         $lC_Customer->reset();          
       ]]></search>         
       <add><![CDATA[
-      if( ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1) {        
+      if( ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1 && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_LOGOUT_URL != '') {        
         lc_redirect(ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_LOGOUT_URL);        
       } ]]></add>
     </operation>
