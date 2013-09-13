@@ -104,7 +104,7 @@ class lC_Store_Admin {
                         lc_draw_input_field('configuration[' . $key . ']', @number_format($Qkey->value('configuration_value'), DECIMAL_PLACES), 'class="input-unstyled" onfocus="this.select();"') .
                      '</div>'; 
           } else {
-            $keys .= lc_draw_input_field('configuration[' . $key . ']', $Qkey->value('configuration_value'), 'class="input" onfocus="this.select();"');
+            $keys .= lc_draw_input_field('configuration[' . $key . ']', $Qkey->value('configuration_value'), 'class="input full-width autoexpanding" onfocus="this.select();"');
           }
         }
       }
