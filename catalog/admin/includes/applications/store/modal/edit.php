@@ -83,7 +83,12 @@ function editAddon(id, name) {
       $("#editAddonFormKeys").html(data.keys);   
       $(".label").addClass('small-margin-top');   
       $.modal.all.centerModal();
-      
+      // added for textarea inputs on app store edit modals
+      if (document.body.clientWidth <= 380) {
+        $('.autoexpanding').attr('cols', '18');
+      } else if (document.body.clientWidth <= 430) {
+        $('.autoexpanding').attr('cols', '23');
+      }
     }
   );
 }

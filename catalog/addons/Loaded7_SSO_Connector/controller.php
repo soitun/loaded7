@@ -11,6 +11,7 @@
   @copyright  (c) 2013 LoadedCommerce Team
   @license    http://loadedcommerce.com/license.html
 */
+//require($lC_Vqmod->modCheck('../includes/classes/utility.php'));
 class Loaded7_SSO_Connector extends lC_Addon { // your addon must extend lC_Addon
   /*
   * Class constructor
@@ -73,11 +74,11 @@ class Loaded7_SSO_Connector extends lC_Addon { // your addon must extend lC_Addo
   public function install() {
     global $lC_Database;
 
-    $encrypted_key = self::getGUID();
+    $encrypted_key = substr(utility::generateUID(), 0, -6);
 
     $lC_Database->simpleQuery("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('Enable AddOn', 'ADDONS_CONNECTORS_" . strtoupper($this->_code) . "_STATUS', '-1', 'Do you want to enable this addon?', '6', '0', 'lc_cfg_use_get_boolean_value', 'lc_cfg_set_boolean_value(array(1, -1))', now())");
-    $lC_Database->simpleQuery("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Remote Login URL', 'ADDONS_CONNECTORS_" . strtoupper($this->_code) . "_REMOTE_LOGIN_URL', '', 'Put Remote Login URL given in Wordpress Loaded7 SSO Options', '6', '0', now())");
-    $lC_Database->simpleQuery("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Remote Logout URL', 'ADDONS_CONNECTORS_" . strtoupper($this->_code) . "_REMOTE_LOGOUT_URL', '', 'Put Remote Logout URL given in Wordpress Loaded7 SSO Options', '6', '0', now())");
+    $lC_Database->simpleQuery("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Remote Login URL', 'ADDONS_CONNECTORS_" . strtoupper($this->_code) . "_REMOTE_LOGIN_URL', '', 'Put Remote Login URL given in Wordpress Loaded7 SSO Options', '6', '0', 'lc_cfg_set_textarea_field', now())");
+    $lC_Database->simpleQuery("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Remote Logout URL', 'ADDONS_CONNECTORS_" . strtoupper($this->_code) . "_REMOTE_LOGOUT_URL', '', 'Put Remote Logout URL given in Wordpress Loaded7 SSO Options', '6', '0', 'lc_cfg_set_textarea_field()', now())");
     $lC_Database->simpleQuery("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Authentication Token', 'ADDONS_CONNECTORS_" . strtoupper($this->_code) . "_AUTHENTICATION_TOKEN', '".$encrypted_key."', '', '6', '0', 'lc_cfg_set_readonly_input_field', now())");    
 
     $lC_Database->simpleQuery("ALTER TABLE " . TABLE_CUSTOMERS . " ADD `external_id` INT( 11 ) NULL , ADD UNIQUE (`external_id`)");
@@ -97,24 +98,6 @@ class Loaded7_SSO_Connector extends lC_Addon { // your addon must extend lC_Addo
     }
 
     return $this->_keys;
-  } 
-  
-  private function getGUID(){
-    if (function_exists('com_create_guid')){
-      return com_create_guid();
-    } else {
-      mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
-      $charid = strtoupper(md5(uniqid(rand(), true)));
-      $hyphen = chr(45);// "-"
-      $uuid = chr(123)// "{"
-              .substr($charid, 0, 8).$hyphen
-              .substr($charid, 8, 4).$hyphen
-              .substr($charid,12, 4).$hyphen
-              .substr($charid,16, 4).$hyphen
-              .substr($charid,20,12)
-              .chr(125);// "}"
-      return $uuid;
-    }
   }
 }
 ?>

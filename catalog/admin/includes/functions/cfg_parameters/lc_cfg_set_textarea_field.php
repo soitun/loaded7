@@ -16,6 +16,6 @@
 
     $name = (!empty($key) ? 'configuration[' . $key . ']' : 'configuration_value');
 
-    return lc_draw_textarea_field($name, $default, 35, 5);
+    return lc_draw_textarea_field($name, $default, 28, 5, 'class="input autoexpanding"');
   }
 ?>
