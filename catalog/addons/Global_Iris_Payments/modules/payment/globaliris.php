@@ -216,10 +216,10 @@ class lC_Payment_globaliris extends lC_Payment {
     $process_button_string .= lc_draw_hidden_field('MD5HASH', $md5hash) . "\n";
     $process_button_string .= lc_draw_hidden_field('AUTO_SETTLE_FLAG', '1') . "\n";
 
-    $process_button_string .= lc_draw_hidden_field('SHIPPING_CODE', $lC_ShoppingCart->getShippingAddress('postcode')) . "\n";
-    $process_button_string .= lc_draw_hidden_field('SHIPPING_CO', $lC_ShoppingCart->getShippingAddress('country_iso_code_2')) . "\n";
-    $process_button_string .= lc_draw_hidden_field('BILLING_CODE', $lC_ShoppingCart->getBillingAddress('postcode')) . "\n";
-    $process_button_string .= lc_draw_hidden_field('BILLING_CO', $lC_ShoppingCart->getBillingAddress('country_iso_code_2')) . "\n";
+    $process_button_string .= lc_draw_hidden_field('SHIPPING_CODE', preg_replace("/[^a-zA-Z0-9]+/", "", $lC_ShoppingCart->getShippingAddress('postcode'))) . "\n";
+    $process_button_string .= lc_draw_hidden_field('SHIPPING_CO', preg_replace("/[^a-zA-Z0-9]+/", "", $lC_ShoppingCart->getShippingAddress('country_iso_code_2'))) . "\n";
+    $process_button_string .= lc_draw_hidden_field('BILLING_CODE', preg_replace("/[^a-zA-Z0-9]+/", "", $lC_ShoppingCart->getBillingAddress('postcode'))) . "\n";
+    $process_button_string .= lc_draw_hidden_field('BILLING_CO', preg_replace("/[^a-zA-Z0-9]+/", "", $lC_ShoppingCart->getBillingAddress('country_iso_code_2'))) . "\n";
 
     return $process_button_string;
   }
