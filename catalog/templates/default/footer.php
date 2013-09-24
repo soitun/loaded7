@@ -78,9 +78,29 @@
       </div>
     </div>
     <address>
-      <div class="float-left">&copy; <?php echo @date("Y") . ' ' . STORE_NAME; ?> <img src="templates/default/images/payment_info.jpg"/></div>
-      <div class="powered-by float-right"><?php echo $lC_Language->get('footer'); ?></div>
+      <?php echo $lC_Template->getBranding('footer_text');?>
     </address>
+    <p class="margin-top"><?php
+        if ($lC_Template->getBranding('social_facebook_page') != '') {
+          echo '<a href="' . $lC_Template->getBranding('social_facebook_page') . '" target="_blank"><img alt="Facebook" src="' . DIR_WS_IMAGES . 'icons/facebook.png" /></a>';
+        }
+        if ($lC_Template->getBranding('social_twitter') != '') {
+          echo '<a href="' . $lC_Template->getBranding('social_twitter') . '" target="_blank"><img alt="Twitter" src="' . DIR_WS_IMAGES . 'icons/twitter_bird.png" /></a>';
+        }
+        if ($lC_Template->getBranding('social_pinterest') != '') {
+          echo '<a href="' . $lC_Template->getBranding('social_pinterest') . '" target="_blank"><img alt="Pinterest" src="' . DIR_WS_IMAGES . 'icons/pinterest.png" /></a>';
+        }
+        if ($lC_Template->getBranding('social_google_plus') != '') {
+          echo '<a href="' . $lC_Template->getBranding('social_google_plus') . '" target="_blank"><img alt="Google+" src="' . DIR_WS_IMAGES . 'icons/google_plus.png" /></a>';
+        }
+        if ($lC_Template->getBranding('social_youtube') != '') {
+          echo '<a href="' . $lC_Template->getBranding('social_youtube') . '" target="_blank"><img alt="Youtube" src="' . DIR_WS_IMAGES . 'icons/youtube.png" /></a>';
+        }
+        if ($lC_Template->getBranding('social_linkedin') != '') {
+          echo '<a href="' . $lC_Template->getBranding('social_linkedin') . '" target="_blank"><img alt="LinkedIn" src="' . DIR_WS_IMAGES . 'icons/linkedin.png" /></a>';
+        }
+      ?><span class="float-right"><img style="border:0;width:88px;height:31px" alt="HTML5 Validator" src="http://upload.wikimedia.org/wikipedia/commons/b/bb/W3C_HTML5_certified.png"><img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="Valid CSS!" /></span>
+    </p>  
   </footer>
 </div>           
 <!--footer.php end-->

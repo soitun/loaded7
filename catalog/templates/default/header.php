@@ -19,6 +19,11 @@
       <div class="mobile-menu" style="display:none;">
         <img src="<?php echo DIR_WS_TEMPLATE_IMAGES; ?>mobile-menu.png" id="mobile-menu-button" />
       </div>
+      <?php if ($lC_Template->getBranding('chat_code') != '') { ?>
+        <div class="livechat">
+          <?php echo $lC_Template->getBranding('chat_code'); ?>
+        </div>  
+      <?php } ?> 
       <div class="language_switch"> 
         <?php echo $lC_Template->getLanguageSelection(); ?>
       </div>
@@ -39,7 +44,24 @@
         <?php echo $lC_Template->getTopCategoriesSelection(); ?>
       </ul>
     </div>
-    <h1 class="logo"><a href="<?php echo lc_href_link(FILENAME_DEFAULT, '', 'NONSSL'); ?>"><img src="<?php echo DIR_WS_TEMPLATE_IMAGES; ?>logo.png" /></a></h1>
+    <h1 class="logo"><a href="<?php echo lc_href_link(FILENAME_DEFAULT, '', 'NONSSL'); ?>">
+      <?php if ($lC_Template->getBranding('site_image') != ''){
+          echo '<img alt="' . STORE_NAME . '" src="' . DIR_WS_IMAGES . 'branding/' . $lC_Template->getBranding('site_image') . '" /></a>';
+        } else { 
+          echo STORE_NAME; 
+    }?></h1>
+    <span  class="slogan hide-on-mobile hide-on-mobile-portrait hide-on-mobile-landscape hide-on-mobile-landscape hide-on-tablet-portrait hide-on-tablet-landscape hide-on-tablet-landscape">
+      <?php if ($lC_Template->getBranding('slogan') != '') { 
+          echo $lC_Template->getBranding('slogan'); 
+        } 
+
+        if ($lC_Template->getBranding('sales_email') != '') {
+          echo '<br> <br>' . $lC_Template->getBranding('sales_email');
+        }
+        if ($lC_Template->getBranding('sales_phone') != '') {
+          echo '<br>' . $lC_Template->getBranding('sales_phone');
+        }
+    ?></span>
     <?php
     if (!empty($content_left)) {
       ?>

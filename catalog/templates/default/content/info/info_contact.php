@@ -24,7 +24,15 @@ if ($lC_MessageStack->size('contact') > 0) {
       <div class="single-bg">
         <div class="embed-form short-code-column margin-bottom">
           <h3><?php echo $lC_Language->get('contact_store_address_title');?></h3>
-          <?php echo nl2br(STORE_NAME_ADDRESS); ?>
+          <div class="one-half"><?php echo nl2br(STORE_NAME_ADDRESS); ?></div>
+          <div class="one-third"><?php
+              if ($lC_Template->getBranding('support_email') != '') {
+                echo '<strong>' . $lC_Language->get('contact_text_support_email') . '</strong><br>' . $lC_Template->getBranding('support_email') . '';
+              }
+              if ($lC_Template->getBranding('support_email') != '') {
+                echo '<br><strong>' . $lC_Language->get('contact_text_support_phone') . '</strong><br>' . $lC_Template->getBranding('support_phone') . '';
+              }
+          ?></div>
         </div>
       </div>
       <div class="single-bg">

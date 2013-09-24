@@ -16,6 +16,7 @@ header, nav, section, footer{ width:980px; margin:0px auto;}
 .section_container { margin-top:1px; }
 
 /*-----------------------------------HEADER*/
+.livechat {display: inline-block;float:left; margin-left:30px; margin-top:10px; }
 .header-container{ background:url(../images/top_bar_bg.png) repeat-x top;}
 header .top_bar{ display:inline-block; width:100%;}
 header .language_switch { position: absolute; top: 17px; }
@@ -31,6 +32,7 @@ header h1.logo{ float:left; padding:10px 0px;}
 header .header_search{ height:23px; width:260px; float:right; padding:3px; margin:-45px 0 0 0;  border:solid 1px #e1e1e1;  cursor:pointer;}
 header .header_search input{ background:none; border:0px; padding:4px; width:82%; color:#b4b4b4;}
 header .header_search button{background:url(../images/search_btn.png) no-repeat center; border:0px; width:20px; height:20px; float:right; margin:2px;}
+header .slogan {display: inline-block;width: 40%; margin-top:20px;margin-left:10px;}
 
 /*-----------------------------------NAV*/
 .navigation_container{ border:solid #e5e3e1; border-width:1px 0px 3px 0px;}
