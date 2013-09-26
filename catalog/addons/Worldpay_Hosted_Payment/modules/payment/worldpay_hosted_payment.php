@@ -221,8 +221,7 @@ class lC_Payment_worldpay_hosted_payment extends lC_Payment {
                                lc_draw_hidden_field('fixContact', 'Y') .
                                lc_draw_hidden_field('lang', $lC_Language->getCode()) .
                                lc_draw_hidden_field('signatureFields', 'amount:currency:cartId') .
-                               lc_draw_hidden_field('signature', md5(ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_MD5_PASSWORD . ':' . $lC_Currencies->formatRaw($lC_ShoppingCart->getTotal(), $lC_Currencies->getCode()) . ':' . $_SESSION['currency'] . ':' . $order_id)) .
-                               lc_draw_hidden_field('MC_callback', lc_href_link(FILENAME_CHECKOUT, 'process', 'SSL', true, true, true));
+                               lc_draw_hidden_field('signature', md5(ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_MD5_PASSWORD . ':' . $lC_Currencies->formatRaw($lC_ShoppingCart->getTotal(), $lC_Currencies->getCode()) . ':' . $_SESSION['currency'] . ':' . $order_id));
 
       if (defined('ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_TRANSACTION_METHOD') && ADDONS_PAYMENT_WORLDPAY_HOSTED_PAYMENT_TRANSACTION_METHOD == '1') {
 
