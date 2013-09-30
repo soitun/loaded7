@@ -233,7 +233,7 @@ class lC_Payment_barclays extends lC_Payment {
       }
     }
     
-    return $process_button_string.lc_draw_hidden_field('SHASIGN', $this->sha_sign());
+    return $process_button_string.lc_draw_hidden_field('SHASIGN', $this->sha_sign($order_id));
   }
  /**
   * Generate hash
@@ -319,10 +319,8 @@ class lC_Payment_barclays extends lC_Payment {
     return $this->_check;
   }
 
-  protected function sha_sign() {
+  protected function sha_sign($order_id) {
     global $lC_ShoppingCart, $lC_Currencies;
-
-    $order_id = lC_Order::insert();
 
     $string_to_hash = '';
 
