@@ -281,7 +281,7 @@ class lC_Payment_barclays extends lC_Payment {
         $status = $_GET['STATUS'];
         $sha = $_GET['SHASIGN'];
 
-        $sha_gen = $this->generate_sha_from_barclays();
+        //$sha_gen = $this->generate_sha_from_barclays();
 
        // if($sha == $sha_gen){ // No fraud detected
         if(true){
