@@ -115,11 +115,15 @@ class lC_Store_Admin {
                         lc_draw_input_field('configuration[' . $key . ']', @number_format($Qkey->value('configuration_value'), DECIMAL_PLACES), 'class="input-unstyled" onfocus="this.select();"') .
                      '</div>'; 
           } else {
-            $keys .= lc_draw_input_field('configuration[' . $key . ']', $Qkey->value('configuration_value'), 'class="input" onfocus="this.select();"');
+            $keys .= lc_draw_input_field('configuration[' . $key . ']', $Qkey->value('configuration_value'), 'class="input full-width autoexpanding" onfocus="this.select();"');
           }
         }
       }
-      $keys .= '<span class="info-spot on-left margin-left"><span class="icon-info-round icon-silver"></span><span class="info-bubble">' . $Qkey->value('configuration_description') . '</span></span><br /><br />';
+      if($Qkey->value('configuration_description') != '') {
+        $keys .= '<span class="info-spot on-left margin-left"><span class="icon-info-round icon-silver"></span><span class="info-bubble">' . $Qkey->value('configuration_description') . '</span></span>';
+      }
+
+      $keys .= '<br /><br />';
       $cnt++;
     }
     $result['keys'] = substr($keys, 0, strrpos($keys, '<br /><br />'));

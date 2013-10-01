@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+  <id>Add Loaded 7 SSO Connector Logic</id>
+  <version>1.0.0</version>
+  <vqmver>2.3.2</vqmver>
+  <author>loadedcommerce.com</author>
+  <file name="includes/content/account/login.php">
+    <operation info="Add Loaded 7 SSO Connector Logic">
+      <search position="before"><![CDATA[
+        <?php        
+      ]]></search>         
+      <add><![CDATA[
+      <?php
+      global $lC_Vqmod;
+      require($lC_Vqmod->modCheck(DIR_FS_CATALOG . 'addons/Loaded7_SSO_Connector/classes/account.php'));
+      ?>
+      ]]></add>
+    </operation>
+    <operation info="Add Loaded 7 SSO Connector Logic">
+      <search position="before"><![CDATA[
+        if ($_GET[$this->_module] == 'process') {          
+      ]]></search>         
+      <add><![CDATA[
+      if(!isset($_GET['LR']) && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1 && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_WORDPRESS_URL != '') { 
+        $separator = "";
+        if(preg_match("/[?]/",ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_WORDPRESS_URL)){
+          $separator = "&loaded7";
+        }else {
+          $separator = "?loaded7";
+        }
+        lc_redirect(ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_LOGIN_URL.$separator);
+      } else if ($_GET['LR'] == 'processSSO') {
+        lC_Account_sso_connector::_processSSO();
+      } else ]]></add>
+    </operation>
+  </file>
+  <file name="includes/content/account/logoff.php">    
+    <operation info="Add Loaded 7 SSO Connector Logic">
+      <search position="after"><![CDATA[
+        $lC_Customer->reset();          
+      ]]></search>         
+      <add><![CDATA[
+      if( ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1 && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_LOGOUT_URL != '') {        
+        lc_redirect(ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_LOGOUT_URL);        
+      } ]]></add>
+    </operation>
+  </file>
+</modification>

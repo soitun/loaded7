@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+  <definitions>
+    <definition>
+      <key>addon_loaded7_sso_connector_title</key>
+      <value><![CDATA[Loaded 7 SSO Connector]]></value>
+      <group>checkout</group>
+    </definition>
+    <definition>
+      <key>addon_loaded7_sso_connector_description</key>
+      <value><![CDATA[Loaded 7 SSO Connector Add-Ons.]]></value>
+      <group>checkout</group>
+    </definition> 
+    <definition>
+      <key>addon_other_loaded_text_on_hand</key>
+      <value><![CDATA[On Hand]]></value>
+      <group>product</group>
+    </definition>        
+  </definitions>
+</language>
