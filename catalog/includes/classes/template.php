@@ -13,150 +13,189 @@
 */
 include_once(DIR_FS_CATALOG . 'includes/classes/BarcodeQR.php');
 
-class lC_Template {
-  /**
-  * Holds the template name value
-  *
-  * @var string
-  * @access protected
-  */
-  protected $_template;
-  /**
-  * Holds the template selected name value
-  *
-  * @var string
-  * @access protected
-  */
-  protected $_template_selected;
-  /**
-  * Holds the template ID value
-  *
-  * @var int
-  * @access protected
-  */
-  protected $_template_id;
-  /**
-  * Holds the title of the page module
-  *
-  * @var string
-  * @access protected
-  */
-  protected $_module;
-  /**
-  * Holds the group name of the page
-  *
-  * @var string
-  * @access protected
-  */
-  protected $_group;
-  /**
-  * Holds the title of the page
-  *
-  * @var string
-  * @access protected
-  */
-  protected $_page_title;
-  /**
-  * Holds the image of the page
-  *
-  * @var string
-  * @access protected
-  */
-  protected $_page_image;
-  /**
-  * Holds the filename of the content to be added to the page
-  *
-  * @var string
-  * @access protected
-  */
-  protected $_page_contents;
-  /**
-  * Holds the meta tags of the page
-  *
-  * @var array
-  * @access protected
-  */
-  protected $_page_tags = array('generator' => array('LoadedCommerce, Innovative eCommerce Solutions'));
-  /**
-  * Holds javascript filenames to be included in the page
-  *
-  * The javascript files must be plain javascript files without any PHP logic, and are linked to from the page
-  *
-  * @var array
-  * @access protected
-  */
-  protected $_javascript_filenames = array();
-  /**
-  * Holds javascript PHP filenames to be included in the page
-  *
-  * The javascript PHP filenames can consist of PHP logic to produce valid javascript syntax, and is embedded in the page
-  *
-  * @var array
-  * @access protected
-  */
-  protected $_javascript_php_filenames = array();
-  /**
-  * Holds blocks of javascript syntax to embedd into the page
-  *
-  * Each block must contain its relevant <script> and </script> tags
-  *
-  * @var array
-  * @access protected
-  */
-  protected $_javascript_blocks = array();
-  /**
-  * Defines if the requested page has a wrapper
-  *
-  * @var boolean
-  * @access protected
-  */
-  protected $_has_wrapper = true;    
-  /**
-  * Defines if the requested page has a header
-  *
-  * @var boolean
-  * @access protected
-  */
-  protected $_has_header = true;
-  /**
-  * Defines if the requested page has a footer
-  *
-  * @var boolean
-  * @access protected
-  */
-  protected $_has_footer = true;
-  /**
-  * Defines if the requested page has box modules
-  *
-  * @var boolean
-  * @access protected
-  */
-  protected $_has_box_modules = true;
-  /**
-  * Defines if the requested page has content modules
-  *
-  * @var boolean
-  * @access protected
-  */
-  protected $_has_content_modules = true;
-  /**
-  * Defines if the requested page should display any debug messages
-  *
-  * @var boolean
-  * @access protected
-  */
-  protected $_show_debug_messages = true;
-  /**
-  * Setup the template class with the requested page module
-  *
-  * @param string $module The default page module to setup
-  * @return object
-  */
-  public function &setup($module) {
-    $group = basename($_SERVER['SCRIPT_FILENAME']);
-    if (($pos = strrpos($group, '.')) !== false) {
-      $group = substr($group, 0, $pos);
-    }
+  class lC_Template {
+
+/**
+ * Holds the template name value
+ *
+ * @var string
+ * @access protected
+ */
+
+    protected $_template;
+
+/**
+ * Holds the template selected name value
+ *
+ * @var string
+ * @access protected
+ */
+
+    protected $_template_selected;
+
+/**
+ * Holds the template ID value
+ *
+ * @var int
+ * @access protected
+ */
+
+    protected $_template_id;
+
+/**
+ * Holds the title of the page module
+ *
+ * @var string
+ * @access protected
+ */
+
+    protected $_module;
+
+/**
+ * Holds the group name of the page
+ *
+ * @var string
+ * @access protected
+ */
+
+    protected $_group;
+
+/**
+ * Holds the title of the page
+ *
+ * @var string
+ * @access protected
+ */
+
+    protected $_page_title;
+
+/**
+ * Holds the image of the page
+ *
+ * @var string
+ * @access protected
+ */
+
+    protected $_page_image;
+
+/**
+ * Holds the filename of the content to be added to the page
+ *
+ * @var string
+ * @access protected
+ */
+
+    protected $_page_contents;
+
+/**
+ * Holds the meta tags of the page
+ *
+ * @var array
+ * @access protected
+ */
+
+    protected $_page_tags = array('generator' => array('LoadedCommerce, Innovative eCommerce Solutions'));
+
+/**
+ * Holds javascript filenames to be included in the page
+ *
+ * The javascript files must be plain javascript files without any PHP logic, and are linked to from the page
+ *
+ * @var array
+ * @access protected
+ */
+
+    protected $_javascript_filenames = array();
+
+/**
+ * Holds javascript PHP filenames to be included in the page
+ *
+ * The javascript PHP filenames can consist of PHP logic to produce valid javascript syntax, and is embedded in the page
+ *
+ * @var array
+ * @access protected
+ */
+
+    protected $_javascript_php_filenames = array();
+
+/**
+ * Holds blocks of javascript syntax to embedd into the page
+ *
+ * Each block must contain its relevant <script> and </script> tags
+ *
+ * @var array
+ * @access protected
+ */
+
+    protected $_javascript_blocks = array();
+    
+/**
+ * Defines if the requested page has a wrapper
+ *
+ * @var boolean
+ * @access protected
+ */
+
+    protected $_has_wrapper = true;    
+
+/**
+ * Defines if the requested page has a header
+ *
+ * @var boolean
+ * @access protected
+ */
+
+    protected $_has_header = true;
+
+/**
+ * Defines if the requested page has a footer
+ *
+ * @var boolean
+ * @access protected
+ */
+
+    protected $_has_footer = true;
+
+/**
+ * Defines if the requested page has box modules
+ *
+ * @var boolean
+ * @access protected
+ */
+
+    protected $_has_box_modules = true;
+
+/**
+ * Defines if the requested page has content modules
+ *
+ * @var boolean
+ * @access protected
+ */
+
+    protected $_has_content_modules = true;
+
+/**
+ * Defines if the requested page should display any debug messages
+ *
+ * @var boolean
+ * @access protected
+ */
+
+    protected $_show_debug_messages = true;
+
+/**
+ * Setup the template class with the requested page module
+ *
+ * @param string $module The default page module to setup
+ * @return object
+ */
+
+    function &setup($module) {
+      global $lC_Vqmod;
+      $group = basename($_SERVER['SCRIPT_FILENAME']);
+      if (($pos = strrpos($group, '.')) !== false) {
+        $group = substr($group, 0, $pos);
+      }
 
     if (empty($_GET) === false) {
       $first_array = array_slice($_GET, 0, 1);
@@ -168,7 +207,8 @@ class lC_Template {
       }
     }
 
-    include('includes/content/' . $group . '/' . $module . '.php');
+    //include('includes/content/' . $group . '/' . $module . '.php');
+    include_once($lC_Vqmod->modCheck('includes/content/' . $group . '/' . $module . '.php'));
     $_page_module_name = 'lC_' . ucfirst($group) . '_' . ucfirst($module);
     $object = new $_page_module_name();
     
