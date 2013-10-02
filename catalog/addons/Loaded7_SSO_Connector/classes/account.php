@@ -70,7 +70,7 @@
       $redirect = false;
       // collect data from WP redirect
       $data = array();
-      $customers_name = explode(' ',$_GET['name'],2);
+      $customers_name = explode('~=~',$_GET['name'],2);
       if (isset($customers_name[0]) ) {
         $data['firstname'] = $customers_name[0];
       } 
