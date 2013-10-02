@@ -68,53 +68,58 @@
       require($lC_Vqmod->modCheck('includes/classes/account.php'));
       
       $redirect = false;
+      // collect data from WP redirect
       $data = array();
-
-      if (self::checkExternalID($_GET['external_id'])) {
+      $customers_name = explode(' ',$_GET['name'],2);
+      if (isset($customers_name[0]) ) {
+        $data['firstname'] = $customers_name[0];
+      } 
+      if (isset($customers_name[1]) ) {
+        $data['lastname'] = $customers_name[1];
+      }      
+      $data['email'] = $_GET['email'];
+      $data['external_id'] = $_GET['external_id'];
+      $data['password'] = mktime();     
      
-        if (self::checkEmailforExternalID($_GET['email'],$_GET['external_id'])) {          
+      if (self::checkExternalID($data['external_id'])) {     
+        if (self::checkEmailforExternalID($data['email'],$data['external_id'])) {
+          // update details from wordpress
+          $Qupdate = $lC_Database->query('update :table_customers set	customers_firstname = :customers_firstname, customers_lastname = :customers_lastname where external_id = :external_id and customers_email_address = :customers_email_address ');
+          $Qupdate->bindTable(':table_customers', TABLE_CUSTOMERS);
+          $Qupdate->bindValue(':customers_firstname', $data['firstname']);
+          $Qupdate->bindValue(':customers_lastname', $data['lastname']);
+          $Qupdate->bindValue(':customers_email_address', $data['email']);
+          $Qupdate->bindInt(':external_id', $data['external_id']);          
+          $Qupdate->execute();
           self::_loginSSO();
           $redirect = true;
-        } else if(lC_Account::checkDuplicateEntry($_GET['email']) === false) {        
+        } else if(lC_Account::checkDuplicateEntry($data['email']) === false) {        
           // update email for existing external_id
           $Qupdate = $lC_Database->query('update :table_customers set customers_email_address = :customers_email_address where external_id = :external_id');
           $Qupdate->bindTable(':table_customers', TABLE_CUSTOMERS);
-          $Qupdate->bindValue(':customers_email_address', $_GET['email']);
-          $Qupdate->bindInt(':external_id', $_GET['external_id']);
+          $Qupdate->bindValue(':customers_email_address', $data['email']);
+          $Qupdate->bindInt(':external_id', $data['external_id']);
           $Qupdate->execute();
           self::_loginSSO();
           $redirect = true;
 
         }
-      } else if (lC_Account::checkEntry($_GET['email'])) {
+      } else if (lC_Account::checkEntry($data['email'])) {
          
         // update external_id for existing email_address
           $Qupdate = $lC_Database->query('update :table_customers set external_id = :external_id where customers_email_address = :customers_email_address');
           $Qupdate->bindTable(':table_customers', TABLE_CUSTOMERS);
-          $Qupdate->bindValue(':customers_email_address', $_GET['email']);
-          $Qupdate->bindInt(':external_id', $_GET['external_id']);
+          $Qupdate->bindValue(':customers_email_address', $data['email']);
+          $Qupdate->bindInt(':external_id', $data['external_id']);
           $Qupdate->execute();
           self::_loginSSO();
           $redirect = true;
       } else { 
     
-        $error = false;       
-        $customers_name = explode(' ',$_GET['name'],2);        
-        $data['external_id'] = $_GET['external_id'];
-        $data['password'] = mktime();
-  
-        if (isset($customers_name[0]) ) {
-          $data['firstname'] = $customers_name[0];
-        } 
-
-        if (isset($customers_name[1]) ) {
-          $data['lastname'] = $customers_name[1];
-        } 
-
-        if (lC_Account::checkDuplicateEntry($_GET['email']) === false) {
-          $data['email_address'] = $_GET['email'];
-        } 
-        
+        $error = false;  
+        if (lC_Account::checkDuplicateEntry($data['email']) === false) {
+          $data['email_address'] = $data['email'];
+        }         
        
         if ( self::createSSOEntry($data)) {
           $redirect = true;

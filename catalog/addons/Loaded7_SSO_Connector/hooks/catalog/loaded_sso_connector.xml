@@ -45,4 +45,18 @@
       } ]]></add>
     </operation>
   </file>
+  <file name="templates/default/content/account/account.php">
+    <operation info="Replace loaded7 link with wordpress link">
+      <search position="replace"><![CDATA[
+        <li><?php echo lc_link_object(lc_href_link(FILENAME_ACCOUNT, 'edit', 'SSL'), $lC_Language->get('my_account_information')); ?></li>
+      ]]></search>         
+      <add><![CDATA[
+        <li><?php
+        $wp_url = ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_LOGIN_URL;
+        $wp_url = substr($wp_url,0,strrpos($wp_url,"/")).'/wp-admin/profile.php?loaded7edit';
+        echo lc_link_object(lc_href_link($wp_url), $lC_Language->get('my_account_information'));  
+        ?></li>
+      ]]></add>
+    </operation>
+  </file> 
 </modification>
