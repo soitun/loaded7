@@ -70,13 +70,8 @@
       $redirect = false;
       // collect data from WP redirect
       $data = array();
-      $customers_name = explode('~=~',$_GET['name'],2);
-      if (isset($customers_name[0]) ) {
-        $data['firstname'] = $customers_name[0];
-      } 
-      if (isset($customers_name[1]) ) {
-        $data['lastname'] = $customers_name[1];
-      }      
+      $data['firstname'] = $_GET['fname'];
+      $data['lastname'] = $_GET['lname'];
       $data['email'] = $_GET['email'];
       $data['external_id'] = $_GET['external_id'];
       $data['password'] = mktime();     
@@ -217,13 +212,14 @@
     }
 
     function is_authenticated() {      
-      $sFullName = $_GET['name'];
+      $sfirstName = $_GET['fname'];
+      $slastName = $_GET['lname'];
       $sEmail = $_GET['email'];
       $sExternalID = $_GET['external_id'];
       $sHash = trim($_GET['hash']);
       $sTimestamp = $_GET['timestamp'];      
 
-      $sMessage = $sFullName . $sEmail . $sExternalID . ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_AUTHENTICATION_TOKEN . $sTimestamp; 
+      $sMessage = $sfirstName . $slastName . $sEmail . $sExternalID . ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_AUTHENTICATION_TOKEN . $sTimestamp; 
       $sToken = MD5($sMessage);
       
       if($sHash == trim($sToken)) {        
