@@ -13,6 +13,9 @@ CKEDITOR.editorConfig = function( config ) {
   //below seeting is for removing editor footer
   config.removePlugins = 'elementspath,resize';
   config.resize_enabled = false;
+  
+  //remove <p> wrap if only text without any paragraphs
+  config.autoParagraph = false;
 
   // The toolbar groups arrangement, optimized for two toolbar rows.
   config.toolbarGroups = [
