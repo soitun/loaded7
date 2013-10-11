@@ -40,7 +40,7 @@
         $lC_Customer->reset();          
       ]]></search>         
       <add><![CDATA[
-      if( ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1 && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_LOGOUT_URL != '') {        
+      if( ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1 && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_LOGOUT_URL != '' && !isset($_GET['loaded7sso']) ) {        
         lc_redirect(ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_LOGOUT_URL);        
       } ]]></add>
     </operation>

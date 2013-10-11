@@ -15,7 +15,8 @@ $_SERVER['SCRIPT_FILENAME'] = __FILE__;
 
 require('includes/application_top.php');
 
-if ($lC_Customer->isLoggedOn() === false) {
+if ($lC_Customer->isLoggedOn() === false && !isset($_GET['loaded7sso'])) {
+
   if (!empty($_GET)) {
     $first_array = array_slice($_GET, 0, 1);
   }
