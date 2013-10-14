@@ -891,7 +891,8 @@ class lC_Products_Admin {
           $Qdel->bindInt(':is_subproduct', 1);
           $Qdel->execute();          
         }        
-        
+     
+
         for ($i=0; $i < sizeof($data['sub_products_name']); $i++) {
           if ($data['sub_products_name'][$i] == '') continue;
 
@@ -915,8 +916,8 @@ class lC_Products_Admin {
           $Qsubproduct->bindInt(':products_status', $data['sub_products_status'][$i]);
           $Qsubproduct->bindInt(':products_tax_class_id', $data['tax_class_id']);
           $Qsubproduct->bindRaw(':products_date_added', 'now()');            
-          $Qsubproduct->bindInt(':is_subproduct', ($data['sub_products_default'][$i] == '1' || sizeof($data['sub_products_name']) == 1) ? 2 : 1);            
-          $Qsubproduct->setLogging($_SESSION['module'], $id);
+          $Qsubproduct->bindInt(':is_subproduct', ($data['sub_products_default'][$i] == '1' || sizeof($data['sub_products_name']) == 2) ? 2 : 1);            
+          $Qsubproduct->setLogging($_SESSION['module'], $products_id);
           $Qsubproduct->execute();
           
           if ( $lC_Database->isError() ) {
@@ -925,8 +926,8 @@ class lC_Products_Admin {
             if ( is_numeric($id) && @in_array($data['sub_products_id'][$i], $data['sub_products_id']) ) {
               $sub_products_id = $data['sub_products_id'][$i];
             } else {
-              $sub_products_id = $lC_Database->nextID();
-            }                  
+              $sub_products_id = self::_getLastID();
+            }                              
             // subproduct description
             foreach ($lC_Language->getAll() as $l) {
               if (is_numeric($id) && @in_array($data['sub_products_id'][$i], $data['sub_products_id'])) {
@@ -2115,6 +2116,17 @@ class lC_Products_Admin {
     }
 
     return false;
-  }    
+  }  
+  
+  private static function _getLastID() {
+    global $lC_Database;
+    
+    $Qchk = $lC_Database->query('select products_id from :table_products order by products_id desc');
+    $Qchk->bindTable(':table_products', TABLE_PRODUCTS);
+    $Qchk->bindInt(':parent_id', $products_id);
+    $Qchk->execute();    
+    
+    return $Qchk->valueInt('products_id');
+  }  
 }
 ?>
