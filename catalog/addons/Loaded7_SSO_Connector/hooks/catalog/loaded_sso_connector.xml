@@ -21,7 +21,7 @@
         if ($_GET[$this->_module] == 'process') {          
       ]]></search>         
       <add><![CDATA[
-      if(!isset($_GET['LR']) && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1 && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_WORDPRESS_URL != '') { 
+      if(!isset($_GET['wp_wrapper']) && !isset($_GET['LR']) && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_STATUS == 1 && ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_WORDPRESS_URL != '') { 
         $separator = "";
         if(preg_match("/[?]/",ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_WORDPRESS_URL)){
           $separator = "&loaded7";
@@ -59,4 +59,38 @@
       ]]></add>
     </operation>
   </file> 
+  <file name="includes/content/checkout/shipping.php">
+    <operation info="Add Loaded 7 SSO Connector Logic">
+      <search position="replace"><![CDATA[
+        lc_redirect(lc_href_link(FILENAME_ACCOUNT, 'login', 'SSL'));
+      ]]></search>         
+      <add><![CDATA[
+        if(isset($_GET['wp_wrapper'])) {
+          lc_redirect(lc_href_link(FILENAME_ACCOUNT, 'login&wp_wrapper=1', 'SSL'));
+        } else {
+          lc_redirect(lc_href_link(FILENAME_ACCOUNT, 'login', 'SSL'));
+        }
+      ]]></add>
+    </operation>
+  </file> 
+  <file name="templates/bs_wrappable/content/account/login.php">
+    <operation info="Replace loaded7 link with wordpress link">
+      <search position="replace"><![CDATA[
+        <form role="form" id="login" name="login" class="no-margin-bottom" action="<?php echo lc_href_link(FILENAME_ACCOUNT, 'login=process', 'SSL'); ?>" method="post">
+      ]]></search>         
+      <add><![CDATA[
+      <?php
+      if(isset($_GET['wp_wrapper'])) {
+      ?>
+        <form role="form" id="login" name="login" class="no-margin-bottom" action="<?php echo lc_href_link(FILENAME_ACCOUNT, 'login=process&wp_wrapper=1', 'SSL'); ?>" method="post">
+      <?php
+      } else {
+      ?>
+        <form role="form" id="login" name="login" class="no-margin-bottom" action="<?php echo lc_href_link(FILENAME_ACCOUNT, 'login=process', 'SSL'); ?>" method="post">
+      <?php
+      }
+      ?>
+      ]]></add>
+    </operation>
+  </file>
 </modification>
