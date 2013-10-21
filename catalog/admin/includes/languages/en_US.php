@@ -246,6 +246,9 @@ messaging_drafts = Drafts
 messaging_trash = Trash
 
 search_placeholder = Search
+slider_switch_enabled = ENABLED
+slider_switch_disabled = DISABLED
+slider_switch_preview = PREVIEW
 
 order_view_details = View details for order number
 customer_view_details = View details for
@@ -255,6 +258,8 @@ tooltip_search = Search (space bar)
 tooltip_quick_add = Quick Add (a)
 tooltip_messages = Messages (m)
 tooltip_settings = Settings (s) / Main Menu (escape)
+
+top_category = Top Category
 
 text_version = Version
 text_confirm_delete = Confirm Delete?
@@ -293,10 +298,13 @@ site_maintenance_message_text = Site is in Maintenance Mode.  Click here to disa
 product_attributes_product_classes_title = Product Classes
 
 text_coming_soon = Pro Feature Coming Soon
-text_cick_for_info = &nbsp;Click for Info&nbsp;
+text_click_for_info = &nbsp;Click for Info&nbsp;
 text_pro = Pro
 text_b2b = B2B
+text_common = Common
+text_feature_information = Feature Information
 text_list = List
+top_category = -- Top --
 text_none = None
 text_no_restriction = No Restriction
 text_product_restriction = Product Restriction
@@ -309,3 +317,5 @@ text_expire_date = To
 text_purchase_over = Minimum Purchase
 text_free_shipping = Free Shipping
 text_free_product = Free Product
+text_upgrade_now = Upgrade Now
+text_full_pro_b2b_features_list = See Full Pro & B2B Feature List
