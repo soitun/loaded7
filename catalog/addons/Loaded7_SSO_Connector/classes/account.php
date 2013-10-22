@@ -122,7 +122,17 @@
       }
 
       if($redirect == true) {
-        lc_redirect(lc_href_link($_GET['redirect'], null, 'AUTO'));
+        // EXTENDED SSO - Start
+        $qry_string = explode('&wp_wrapper&',$_SERVER["QUERY_STRING"]);
+        if(isset($_GET['wp_wrapper'])) {
+          $wp_url = ADDONS_CONNECTORS_LOADED7_SSO_CONNECTOR_REMOTE_LOGIN_URL;
+          $wp_url = substr($wp_url,0,strrpos($wp_url,"/"));         
+          lc_redirect($wp_url.'/?'.$qry_string[1].'&lCsid='.$_COOKIE['lCsid']);
+        } else { 
+          lc_redirect(lc_href_link($_GET['redirect'], null, 'AUTO'));
+        }
+        // EXTENDED SSO - End
+        //lc_redirect(lc_href_link($_GET['redirect'], null, 'AUTO'));
       }      
     }
 
