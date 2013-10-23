@@ -84,7 +84,10 @@ global $lC_Language, $pInfo;
                     ?>
                     <div id="defaultImagesContainer">
                       <div id="defaultImages" style="overflow: auto;" class="small-margin-top"></div>
-                    </div>                    
+                    </div> 
+                    
+                    <!--VQMOD1-->                   
+                    
                   <?php
                   }
                 ?>
