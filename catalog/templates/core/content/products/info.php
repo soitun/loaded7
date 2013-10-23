@@ -162,7 +162,7 @@ $(document).ready(function() {
 
 function refreshPrice() {
   var currencySymbolLeft = '<?php echo $lC_Currencies->getSymbolLeft(); ?>';
-  var basePrice = '<?php echo $lC_Product->getBasePrice(); ?>';
+  var basePrice = '<?php echo $lC_Product->getPriceFormated(true); ?>';
 
   var priceModTotal = 0;
   // loop thru any options select fields
@@ -185,10 +185,11 @@ function refreshPrice() {
   var adjPrice = (parseFloat(basePrice) + parseFloat(priceModTotal));
   var adjPriceFormatted = currencySymbolLeft + adjPrice.toFixed(<?php echo DECIMAL_PLACES; ?>);
   
-  var isSpecial = $('.product-special-price').text();
-  if (isSpecial.length > 0) {
-    $('.product-special-price').html(adjPriceFormatted);
-  } else {
+  if(isNaN(adjPriceFormatted)){
+    
+    $('.content-products-info-price').html(basePrice); // Special price
+  }else{
+    
     $('.content-products-info-price').html(adjPriceFormatted);
   }
 }

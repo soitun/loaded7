@@ -33,10 +33,13 @@ $(document).ready(function() {
   } else if (module == 'orders') {
     $("#shortcuts li").parent().find('li').removeClass("current");
     $("#sc-orders").addClass('current');   
+  } else if (module == 'orders_status') {
+    $("#shortcuts li").parent().find('li').removeClass("current");
+    $("#sc-orders").addClass('current');   
   } else if (module == 'categories' || module == 'content') {
     $("#shortcuts li").parent().find('li').removeClass("current");
     $("#sc-content").addClass('current'); 
-  } else if (module == 'specials' || module == 'manufacturers' || module == 'reviews' || (module.indexOf('product') != -1) ) {
+  } else if (module == 'specials' || module == 'manufacturers' || module == 'reviews' || module == 'image_groups' || module == 'weight_classes' || (module.indexOf('product') != -1) ) {
     $("#shortcuts li").parent().find('li').removeClass("current");
     $("#sc-products").addClass('current');
   } else if (module == 'banner_manager' || module == 'newsletters' || module == 'coupons' || module == 'branding_manager') {
@@ -77,12 +80,16 @@ $(document).ready(function() {
     } else if (module.indexOf("templates_modules_layout") != -1 && document.location.href.indexOf("set=content") != -1) {
       $("#big-menu_templates_modules_layout").addClass('current navigable-current').change();
       cfg = true;
-    } else if (module.indexOf("products") != -1 && document.location.href.indexOf("products") != -1) {
-      $("#big-menu_product_catalog").addClass('current navigable-current').change();
+    } else if (module.indexOf("products") != -1 && document.location.href.indexOf("products") != -1 && module.indexOf("expected") == -1) {
+      $("#big-menu_products_list").addClass('current navigable-current').change();
+    } else if (module.indexOf("products_expected") != -1 && document.location.href.indexOf("expected") != -1) {
+      $("#big-menu_products_expected").addClass('current navigable-current').change();
     } else if (module.indexOf("coupons") != -1 && document.location.href.indexOf("coupons") != -1) {
       $("#big-menu_coupon_manager").addClass('current navigable-current').change();
+    } else if (module.indexOf("orders") != -1 && document.location.href.indexOf("action=save") != -1) {
+      $("#big-menu_orders_list").addClass('current navigable-current').change();
     } else if (module.indexOf("product_variants") != -1 && document.location.href.indexOf("product_variants") != -1) {
-      $("#big-menu_product_variants").addClass('current navigable-current').change();
+      $("#big-menu_options_manager").addClass('current navigable-current').change();
     } else if (module.indexOf("statistics") != -1 && document.location.href.indexOf("statistics") != -1) {
       $("#big-menu_statistics").addClass('current navigable-current').change();
     } else if (module.indexOf("tax_classes") != -1 && document.location.href.indexOf("tax_classes") != -1) {
@@ -160,6 +167,11 @@ $(document).ready(function() {
     });
     // when a key is pressed 
     $("*").keypress(function(e){
+      // check to see if input is datatables search
+      var attr = $("#batch input").attr('aria-controls');
+      if (attr) {
+        disableKeyCombo = true;
+      }
       // if the disable var is false we continue
       if (!disableKeyCombo == true) {
         // first check if the escape key has been presed
@@ -378,7 +390,11 @@ $(document).ready(function() {
   } if ($(window).width() >= 1380) {
     $("#category_tabs").removeClass("standard-tabs");
     $("#category_tabs").addClass("side-tabs");
-  }        
+  }
+  
+  $(".go-pro-menu-ad").on('click', function(){
+    window.open("http://www.loadedcommerce.com/loaded-pre-order-p-395.html");    
+  });        
      
 });
 

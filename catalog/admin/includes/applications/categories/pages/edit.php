@@ -70,7 +70,7 @@
         <ul class="tabs">
           <li class="active"><?php echo lc_link_object('#section_general_content', $lC_Language->get('section_general')); ?></li>
           <li id="tabHeaderSectionDataContent"><?php echo lc_link_object('#section_data_content', $lC_Language->get('section_data')); ?></li>
-          <li><?php echo lc_link_object('#section_categories_content', $lC_Language->get('section_categories')); ?></li>
+          <!--<li><?php echo lc_link_object('#section_categories_content', $lC_Language->get('section_categories')); ?></li>-->
         </ul>
         <div class="clearfix tabs-content">
           <div id="section_general_content">
@@ -330,9 +330,9 @@
               </div>
             </fieldset>
           </div>
-          <div id="section_categories_content" class="with-padding"> 
+          <!--<div id="section_categories_content" class="with-padding"> 
             Relationships (Later Phase)
-          </div>
+          </div>-->
         </div>
       </div>
       <?php echo lc_draw_hidden_field('sort_order', $lC_ObjectInfo->get('sort_order')); ?>
@@ -348,13 +348,13 @@
                 <span class="button-icon red-gradient glossy">
                   <span class="icon-cross"></span>
                 </span>
-                <span class="button-text"><?php echo $lC_Language->get('button_cancel'); ?></span>
+                <span><?php echo $lC_Language->get('button_cancel'); ?></span>
               </a>&nbsp;
               <a class="button<?php echo (((int)$_SESSION['admin']['access'][$lC_Template->getModule()] < 3) ? ' disabled' : NULL); ?>" onclick="validateForm('#category');" href="javascript:void(0);">
                 <span class="button-icon green-gradient glossy">
                   <span class="icon-download"></span>
                 </span>
-                <span class="button-text"><?php echo $lC_Language->get('button_save'); ?></span> 
+                <span><?php echo $lC_Language->get('button_save'); ?></span> 
               </a>&nbsp;
             </p>
           </div>

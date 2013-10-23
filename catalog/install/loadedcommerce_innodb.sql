@@ -514,6 +514,8 @@ CREATE TABLE lc_orders_status_history (
   date_added datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   customer_notified int(11) DEFAULT NULL,
   comments text,
+  administrators_id int(11) DEFAULT NULL,
+  append_comment int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (orders_status_history_id)
 ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -6026,6 +6028,24 @@ INSERT INTO lc_zones (zone_country_id, zone_code, zone_name) VALUES (239,'MS','M
 INSERT INTO lc_zones (zone_country_id, zone_code, zone_name) VALUES (239,'MV','Masvingo');
 INSERT INTO lc_zones (zone_country_id, zone_code, zone_name) VALUES (239,'MW','Mashonaland West');
 
+INSERT INTO lc_administrators_groups (id, `name`, date_added, last_modified) VALUES(2, 'Customer Service', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+INSERT INTO lc_administrators_groups (id, `name`, date_added, last_modified) VALUES(3, 'Support', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+INSERT INTO lc_banners (banners_id, banners_title, banners_url, banners_target, banners_image, banners_group, banners_html_text, expires_impressions, expires_date, date_scheduled, date_added, date_status_change, status) VALUES(1, 'Mainpage Banner', '', 1, 'promo_cat_banner.jpg', 'mainpage', '', 0, NULL, NULL, '2012-12-19 19:18:20', NULL, 1);
+
+INSERT INTO lc_categories (categories_id, categories_image, parent_id, sort_order, categories_mode, categories_link_target, categories_custom_url, categories_status, categories_visibility_nav, categories_visibility_box, date_added, last_modified) VALUES(1, 'products.jpg', 0, 10, 'category', 0, '', 1, 0, 1, '0000-00-00 00:00:00', NULL);
+
+INSERT INTO lc_categories_description (categories_id, language_id, categories_name, categories_menu_name, categories_blurb, categories_description, categories_tags) VALUES(1, 1, 'Products', 'Products', 'Products Blurb', '<p>Products Content</p>', 'products, tags');
+
+INSERT INTO lc_permalinks (permalink_id, item_id, language_id, `type`, query, permalink) VALUES (1, 1, 1, 1, 'cPath=1', 'products');
+
+INSERT INTO lc_configuration (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, last_modified, date_added, use_function, set_function) VALUES('Enable AddOn', 'ADDONS_PAYMENT_CASH_ON_DELIVERY_STATUS', '1', 'Do you want to enable this addon?', 6, 0, NULL, '2013-08-28 10:46:22', 'lc_cfg_use_get_boolean_value', 'lc_cfg_set_boolean_value(array(1, -1))');
+INSERT INTO lc_configuration (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, last_modified, date_added, use_function, set_function) VALUES('Payment Zone', 'ADDONS_PAYMENT_CASH_ON_DELIVERY_ZONE', '0', 'If a zone is selected, only enable this payment method for that zone.', 6, 0, NULL, '2013-08-28 10:46:22', 'lc_cfg_use_get_zone_class_title', 'lc_cfg_set_zone_classes_pull_down_menu');
+INSERT INTO lc_configuration (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, last_modified, date_added, use_function, set_function) VALUES('Order Status', 'ADDONS_PAYMENT_CASH_ON_DELIVERY_ORDER_STATUS_ID', '1', 'Set the status of orders made with this payment module to this value', 6, 0, NULL, '2013-08-28 10:46:22', 'lc_cfg_use_get_order_status_title', 'lc_cfg_set_order_statuses_pull_down_menu');
+INSERT INTO lc_configuration (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, last_modified, date_added, use_function, set_function) VALUES('Sort Order', 'ADDONS_PAYMENT_CASH_ON_DELIVERY_SORT_ORDER', '0', 'Sort order of display. Lowest is displayed first.', 6, 0, NULL, '2013-08-28 10:46:22', NULL, NULL);
+INSERT INTO lc_configuration (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, last_modified, date_added, use_function, set_function) VALUES('Enable AddOn', 'ADDONS_SHIPPING_FREE_SHIPPING_STATUS', '1', 'Do you want to enable this addon?', 6, 0, NULL, '2013-08-27 11:15:18', 'lc_cfg_use_get_boolean_value', 'lc_cfg_set_boolean_value(array(1, -1))');
+INSERT INTO lc_configuration (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, last_modified, date_added, use_function, set_function) VALUES('Shipping Cost', 'ADDONS_SHIPPING_FREE_SHIPPING_MINIMUM_ORDER', '0.00', 'The minimum order amount to apply free shipping to.', 6, 0, NULL, '2013-08-27 11:15:18', NULL, NULL);
+INSERT INTO lc_configuration (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, last_modified, date_added, use_function, set_function) VALUES('Shipping Zone', 'ADDONS_SHIPPING_FREE_SHIPPING_ZONE', '0', 'If a zone is selected, only enable this shipping method for that zone.', 6, 0, NULL, '2013-08-27 11:15:18', 'lc_cfg_use_get_zone_class_title', 'lc_cfg_set_zone_classes_pull_down_menu');
 
 INSERT INTO lc_credit_cards (id, credit_card_name, pattern, credit_card_status, sort_order) VALUES(1, 'American Express', '/^(34|37)\\d{13}$/', '1', 0);
 INSERT INTO lc_credit_cards (id, credit_card_name, pattern, credit_card_status, sort_order) VALUES(2, 'Diners Club', '/^(30|36|38)\\d{12}$/', '0', 0);
@@ -6076,22 +6096,48 @@ INSERT INTO lc_tax_class VALUES (1, 'Taxable Goods', 'The following types of pro
 
 # USA/Florida
 INSERT INTO lc_tax_rates VALUES (1, 1, 1, 1, 7.0, 'FL TAX 7.0%', now(), now());
-INSERT INTO lc_geo_zones (geo_zone_id,geo_zone_name,geo_zone_description,date_added) VALUES (1,"Florida","Florida local sales tax zone",now());
-INSERT INTO lc_zones_to_geo_zones (association_id,zone_country_id,zone_id,geo_zone_id,date_added) VALUES (1,223,4031,1,now());
+INSERT INTO lc_geo_zones (geo_zone_id, geo_zone_name, geo_zone_description, date_added) VALUES (1, "Florida", "Florida local sales tax zone", now());
+INSERT INTO lc_zones_to_geo_zones (association_id, zone_country_id, zone_id, geo_zone_id, date_added) VALUES (1, 223, 4031, 1, now());
 
 INSERT INTO lc_templates (id, title, code, author_name, author_www, markup_version, css_based, `medium`) VALUES(1, 'Loaded Commerce Bootstrap 3.0 Core Template', 'core', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'HTML 5.0', 1, 'Screen');
 
-INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(1, 'Sub Total', 'sub_total', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'order_total');
-INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(2, 'Shipping', 'shipping', 'LoadedComerce', 'http://www.loadedcommerce.com', 'order_total');
-INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(3, 'Coupon', 'coupon', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'order_total');
-INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(4, 'Tax', 'tax', 'LoadedComerce', 'http://www.loadedcommerce.com', 'order_total');
-INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(5, 'Total', 'total', 'LoadedComerce', 'http://www.loadedcommerce.com', 'order_total');
-INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(6, 'Days to Ship', 'shipping_availability', 'Loaded Commerce, LLC', 'http://www.loadedcommerce.com', 'product_attributes');
-INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(7, 'Manufacturer', 'manufacturers', 'Loaded Commerce, LLC', 'http://www.loadedcommerce.com', 'product_attributes');
-INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(8, 'Date Available', 'date_available', 'Loaded Commerce, LLC', 'http://www.loadedcommerce.com', 'product_attributes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(1, 'Days to Ship', 'shipping_availability', 'Loaded Commerce, LLC', 'http://www.loadedcommerce.com', 'product_attributes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(2, 'Manufacturer', 'manufacturers', 'Loaded Commerce, LLC', 'http://www.loadedcommerce.com', 'product_attributes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(3, 'Date Available', 'date_available', 'Loaded Commerce, LLC', 'http://www.loadedcommerce.com', 'product_attributes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(4, 'Free Shipping', 'free', 'Loaded Commerce, LLC', 'http://www.loadedcommerce.com', 'shipping|Free_Shipping');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(5, 'Cash On Delivery', 'cod', 'Loaded Commerce, LLC', 'http://www.loadedcommerce.com', 'payment|Cash_On_Delivery');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(6, 'Categories', 'categories', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(7, 'Best Sellers', 'best_sellers', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(8, 'Currencies', 'currencies', 'LoadedCommerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(9, 'Information', 'information', 'LoadedCommerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(10, 'Languages', 'languages', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(11, 'Manufacturer Info', 'manufacturer_info', 'LoadedCommerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(12, 'Manufacturers', 'manufacturers', 'LoadedCommerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(13, 'New Products', 'whats_new', 'LoadedCommerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(14, 'Order History', 'order_history', 'LoadedCommerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(15, 'Ordering Steps', 'checkout_trail', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(16, 'Product Notifications', 'product_notifications', 'LoadedCommerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(17, 'Reviews', 'reviews', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(18, 'Search', 'search', 'LoadedCommerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(19, 'Shopping Cart', 'shopping_cart', 'LoadedCommerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(20, 'Specials', 'specials', 'LoadedCommerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(21, 'Tell a Friend', 'tell_a_friend', 'LoadedCommerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(22, 'Templates', 'templates', 'LoadedCommerce', 'http://www.loadedcommerce.com', 'boxes');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(23, 'Banner on Mainpage', 'mainpage_banner', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'content');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(24, 'New Products', 'new_products', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'content');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(25, 'Your Recent History', 'recently_visited', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'content');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(26, 'Customers Who Purchased This Product Also Purchased', 'also_purchased_products', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'content');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(27, 'Content on Mainpage', 'mainpage_content', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'content');
+INSERT INTO lc_templates_boxes (id, title, code, author_name, author_www, modules_group) VALUES(28, 'Upcoming Products', 'upcoming_products', 'Loaded Commerce', 'http://www.loadedcommerce.com', 'content');
+
+INSERT INTO lc_templates_boxes_to_pages (templates_boxes_id, templates_id, content_page, boxes_group, sort_order, page_specific) VALUES(23, 1, 'index/index', 'after', 10, 1);
+INSERT INTO lc_templates_boxes_to_pages (templates_boxes_id, templates_id, content_page, boxes_group, sort_order, page_specific) VALUES(6, 1, '*', 'left', 10, 0);
+INSERT INTO lc_templates_boxes_to_pages (templates_boxes_id, templates_id, content_page, boxes_group, sort_order, page_specific) VALUES(12, 1, '*', 'left', 20, 0);
+INSERT INTO lc_templates_boxes_to_pages (templates_boxes_id, templates_id, content_page, boxes_group, sort_order, page_specific) VALUES(24, 1, 'index/index', 'after', 20, 1);
+INSERT INTO lc_templates_boxes_to_pages (templates_boxes_id, templates_id, content_page, boxes_group, sort_order, page_specific) VALUES(26, 1, 'products/info', 'after', 20, 1);
+INSERT INTO lc_templates_boxes_to_pages (templates_boxes_id, templates_id, content_page, boxes_group, sort_order, page_specific) VALUES(25, 1, 'products/info', 'after', 10, 1);
 
 INSERT INTO lc_weight_classes (weight_class_id, weight_class_key, language_id, weight_class_title) VALUES(1, 'g', 1, 'Gram(s)');
 INSERT INTO lc_weight_classes (weight_class_id, weight_class_key, language_id, weight_class_title) VALUES(2, 'kg', 1, 'Kilogram(s)');
 INSERT INTO lc_weight_classes (weight_class_id, weight_class_key, language_id, weight_class_title) VALUES(3, 'oz', 1, 'Ounce(s)');
 INSERT INTO lc_weight_classes (weight_class_id, weight_class_key, language_id, weight_class_title) VALUES(4, 'lb', 1, 'Pound(s)');
-
