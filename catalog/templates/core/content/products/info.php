@@ -78,7 +78,7 @@
         ?>
         <div class="content-products-info-price-container clearfix">
           <span class="content-products-info-price pull-left lt-blue"><?php echo $lC_Product->getPriceFormated(true); ?></span>
-          <span class="content-products-info-avail with-padding-no-top-bottom"><?php echo $availability ?></span> (<?php echo lc_link_object(lc_href_link(FILENAME_INFO, 'shipping'), $lC_Language->get('more_information'), 'target="_blank"'); ?>)
+          <span class="content-products-info-avail with-padding-no-top-bottom"><?php echo $availability ?></span>
         </div>
         <?php
       }
