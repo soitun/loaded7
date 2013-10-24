@@ -8,6 +8,10 @@
     <operation info="Add Vantiv Override">
       <search position="after"><![CDATA[/*VQMOD1*/]]></search>         
       <add><![CDATA[if ($type == 'payment' && $addon['code'] != 'Vantiv_Payments') continue; ]]></add>
-    </operation>    
+    </operation> 
+    <operation info="Add Vantiv Override">
+      <search position="after"><![CDATA[/*VQMOD2*/]]></search>         
+      <add><![CDATA[$aTypes = array(); foreach ($types['data'] as $key => $val) { if (strtolower($val['text']) == 'featured') continue; $aTypes[] = $val; } $types['data'] = $aTypes; ]]></add>
+    </operation>        
   </file> 
 </modification>
