@@ -145,15 +145,15 @@ class lC_Product_classes_Admin {
     
     foreach ( $lC_Language->getAll() as $l ) {
       if ( is_numeric($id) ) {
-        $Qpc = $lC_Database->query('update :table_product_classes set name = :name where id = :id and language_id = :language_id');
+        $Qpc = $lC_Database->query('update :table_product_classes set name = :name, comment = :comment where id = :id and language_id = :language_id');
       } else {
         $Qpc = $lC_Database->query('insert into :table_product_classes (name, comment, language_id) values (:name, :comment, :language_id)');
-        $Qpc->bindValue(':comment', $data['comment']);
       }
 
       $Qpc->bindTable(':table_product_classes', TABLE_PRODUCT_CLASSES);
       $Qpc->bindInt(':id', $product_class_id);
       $Qpc->bindValue(':name', $data['name'][$l['id']]);
+      $Qpc->bindValue(':comment', $data['comment']);
       $Qpc->bindInt(':language_id', $l['id']);
       $Qpc->setLogging($_SESSION['module'], $product_class_id);
       $Qpc->execute();      
